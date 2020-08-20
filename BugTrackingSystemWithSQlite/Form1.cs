@@ -15,7 +15,7 @@ namespace BugTrackingSystemWithSQlite
 {
     public partial class Form1 : Form
     {
-        public string dbFileName;
+        public string dbFileName = DataBase.dbFileName;
         public SQLiteConnection dbConnect;
         public SQLiteCommand dbCommand;        
 
@@ -33,94 +33,22 @@ namespace BugTrackingSystemWithSQlite
 
         //Создание файла
         private void toolSpFileCreate_Click(object sender, EventArgs e)
-        {            
-            Stream myStream;
-            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-            saveFileDialog1.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            saveFileDialog1.Filter = "DataBase Files(*.db;*.sdb;*.sqlite;*.db3;*.s3db;*.sqlite3;*.sl3;)|*.db*;.sdb;*.sqlite;*.db3;*.s3db;*.sqlite3;*.sl3;";
-            saveFileDialog1.FilterIndex = 2;
-            saveFileDialog1.DefaultExt = "db";
-            saveFileDialog1.RestoreDirectory = true;
-
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                if ((myStream = saveFileDialog1.OpenFile()) != null)
-                {
-                    myStream.Close();
-                    dbFileName = saveFileDialog1.FileName;
-                    try
-                    {
-                        dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
-                        dbConnect.Open();
-                        dbCommand.Connection = dbConnect;
-                        dbCommand.CommandText = "CREATE TABLE IF NOT EXISTS ProjectList (idProject INTEGER PRIMARY KEY AUTOINCREMENT, Project TEXT);CREATE TABLE IF NOT EXISTS UserList (idProject INTEGER PRIMARY KEY AUTOINCREMENT, User TEXT);CREATE TABLE IF NOT EXISTS TaskList (idTask INTEGER PRIMARY KEY AUTOINCREMENT, Task TEXT, Project TEXT, Theme TEXT, Type TEXT, Priority TEXT, User TEXT, Description TEXT);CREATE TABLE IF NOT EXISTS TriggerList (idTrigger INTEGER PRIMARY KEY AUTOINCREMENT, Trigger TEXT)";
-                        dbCommand.ExecuteNonQuery();
-                        dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS ProjectAddTrigger AFTER INSERT ON ProjectList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Добавлен проект.'); END";
-                        dbCommand.ExecuteNonQuery();
-                        dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS ProjectDelTrigger AFTER DELETE ON ProjectList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Удалён проект.'); END";
-                        dbCommand.ExecuteNonQuery();
-                        dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS UserAddTrigger AFTER INSERT ON UserList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Добавлен пользователь.'); END";
-                        dbCommand.ExecuteNonQuery();
-                        dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS UserDelTrigger AFTER DELETE ON USerList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Удалён пользователь.'); END";
-                        dbCommand.ExecuteNonQuery();
-                        dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS TaskAddTrigger AFTER INSERT ON TaskList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Добавлена задача.'); END";
-                        dbCommand.ExecuteNonQuery();
-                        dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS TaskDelTrigger AFTER DELETE ON TaskList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Удалена задача.'); END";
-                        dbCommand.ExecuteNonQuery();
-                    }
-                    catch (SQLiteException ex)
-                    {
-                        MessageBox.Show("Ошибка: " + ex.Message);
-                    }                    
-                }                
-                dgvViewer.Rows.Clear();
-                dgvViewer.Columns.Clear();
-            }            
+        {
+            DataBase dataBase = new DataBase();
+            dataBase.CreateFile();
         }
 
         //Открытие файла
         private void toolSpFileOpen_Click(object sender, EventArgs e)
-        {            
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            openFileDialog.Filter = "DataBase Files(*.db;*.sdb;*.sqlite;*.db3;*.s3db;*.sqlite3;*.sl3;)|*.db*;.sdb;*.sqlite;*.db3;*.s3db;*.sqlite3;*.sl3;";
-            openFileDialog.RestoreDirectory = true;
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {                   
-                dbFileName = openFileDialog.FileName;
-                try
-                {
-                    dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
-                    dbConnect.Open();
-                    dbCommand.Connection = dbConnect;
-                    dbCommand.CommandText = "CREATE TABLE IF NOT EXISTS ProjectList (idProject INTEGER PRIMARY KEY AUTOINCREMENT, Project TEXT);CREATE TABLE IF NOT EXISTS UserList (idProject INTEGER PRIMARY KEY AUTOINCREMENT, User TEXT);CREATE TABLE IF NOT EXISTS TaskList (idTask INTEGER PRIMARY KEY AUTOINCREMENT, Task TEXT, Project TEXT, Theme TEXT, Type TEXT, Priority TEXT, User TEXT, Description TEXT);CREATE TABLE IF NOT EXISTS TriggerList (idTrigger INTEGER PRIMARY KEY AUTOINCREMENT, Trigger TEXT)";
-                    dbCommand.ExecuteNonQuery();
-                    dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS ProjectAddTrigger AFTER INSERT ON ProjectList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Добавлен проект.'); END";
-                    dbCommand.ExecuteNonQuery();
-                    dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS ProjectDelTrigger AFTER DELETE ON ProjectList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Удалён проект.'); END";
-                    dbCommand.ExecuteNonQuery();
-                    dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS UserAddTrigger AFTER INSERT ON UserList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Добавлен пользователь.'); END";
-                    dbCommand.ExecuteNonQuery();
-                    dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS UserDelTrigger AFTER DELETE ON USerList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Удалён пользователь.'); END";
-                    dbCommand.ExecuteNonQuery();
-                    dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS TaskAddTrigger AFTER INSERT ON TaskList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Добавлена задача.'); END";
-                    dbCommand.ExecuteNonQuery();
-                    dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS TaskDelTrigger AFTER DELETE ON TaskList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Удалена задача.'); END";
-                    dbCommand.ExecuteNonQuery();
-                }
-                catch (SQLiteException ex)
-                {
-                    MessageBox.Show("Ошибка: " + ex.Message);
-                }               
-                dgvViewer.Rows.Clear();
-                dgvViewer.Columns.Clear();
-            }
+        {
+            DataBase dataBase = new DataBase();
+            dataBase.OpenFile();
         }
 
         //Кнопка добавления проекта
         private void bnAddNameProject_Click(object sender, EventArgs e)
         {
-            if (File.Exists(dbFileName))
+            if (File.Exists(dbFileName = DataBase.dbFileName))
             {
                 if (tbProjectName.Text != "")
                 {
@@ -193,7 +121,14 @@ namespace BugTrackingSystemWithSQlite
         private void bnShowProjects_Click(object sender, EventArgs e)
         {
             Project project = new Project(dbFileName, dbConnect, dbCommand);
-            project.ShowProjects(dgvViewer);
+            if (File.Exists(dbFileName = DataBase.dbFileName))
+            {
+                project.ShowProjects(dgvViewer);
+            }
+            else
+            {
+                MessageBox.Show("Необходимо создать или открыть файл базы данных!");
+            }                
         }
 
         //Показать список пользователей
@@ -249,24 +184,17 @@ namespace BugTrackingSystemWithSQlite
         //Заполнение списка проектов для задач
         private void fillCbTasksInProject()
         {
-            dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
-            dbConnect.Open();
-            dbCommand.Connection = dbConnect;
-            string sqlQuery;
-            DataTable dTable = new DataTable();
-            sqlQuery = "SELECT Project FROM ProjectList";
-            SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, dbConnect);
-            adapter.Fill(dTable);
+            DataBase dataBase = new DataBase();
             cbTasksInProject.Items.Clear();
 
-            for (int i = 0; i < dTable.Rows.Count; i++)
+            for (int i = 0; i < dataBase.SelectColumn("ProjectList","Project").Rows.Count; i++)
             {
-                cbTasksInProject.Items.AddRange(dTable.Rows[i].ItemArray);
+                cbTasksInProject.Items.AddRange(dataBase.SelectColumn("ProjectList", "Project").Rows[i].ItemArray);
             }
         }
         private void cbTasksInProject_Enter(object sender, EventArgs e)
         {
-            if (File.Exists(dbFileName))
+            if (File.Exists(dbFileName = DataBase.dbFileName))
             {
                 fillCbTasksInProject();
             }
@@ -275,24 +203,17 @@ namespace BugTrackingSystemWithSQlite
         //Заполнение списка пользователей для задач
         private void fillCbTasksOnUser()
         {
-            dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
-            dbConnect.Open();
-            dbCommand.Connection = dbConnect;
-            string sqlQuery;
-            DataTable dTable = new DataTable();
-            sqlQuery = "SELECT User FROM UserList";
-            SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, dbConnect);
-            adapter.Fill(dTable);
+            DataBase dataBase = new DataBase();
             cbTasksOnUser.Items.Clear();
 
-            for (int i = 0; i < dTable.Rows.Count; i++)
+            for (int i = 0; i < dataBase.SelectColumn("UserList","User").Rows.Count; i++)
             {
-                cbTasksOnUser.Items.AddRange(dTable.Rows[i].ItemArray);
+                cbTasksOnUser.Items.AddRange(dataBase.SelectColumn("UserList", "User").Rows[i].ItemArray);
             }
         }
         private void cbTasksOnUser_Enter(object sender, EventArgs e)
         {
-            if (File.Exists(dbFileName))
+            if (File.Exists(dbFileName = DataBase.dbFileName))
             {
                 fillCbTasksOnUser();
             }            

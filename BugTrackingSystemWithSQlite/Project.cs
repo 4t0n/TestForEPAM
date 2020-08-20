@@ -28,29 +28,9 @@ namespace BugTrackingSystemWithSQlite
 
         //Добавление проекта
         public void AddNameProject(string tbProjectName)
-        {               
-            if (File.Exists(dbFileName))
-            {
-                dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
-                dbConnect.Open();
-                dbCommand.Connection = dbConnect;
-
-                try
-                {
-                    dbCommand.CommandText = "INSERT INTO ProjectList ('Project') values ('" +
-                        tbProjectName + "')";
-                    dbCommand.ExecuteNonQuery();
-                }
-                catch (SQLiteException ex)
-                {
-                    MessageBox.Show("Ошибка: " + ex.Message);
-                }
-                dbConnect.Close();
-            }
-            else
-            {
-                MessageBox.Show("Необходимо создать или открыть файл базы данных!");
-            }
+        {
+            DataBase dataBase = new DataBase();
+            dataBase.AddItem("ProjectList", "Project", tbProjectName);
         }
 
         //Вызов формы для удаления проекта
@@ -70,40 +50,25 @@ namespace BugTrackingSystemWithSQlite
         //Показать список проектов
         public void ShowProjects(DataGridView dgvViewer)
         {
-            if (File.Exists(dbFileName))
-            {
-                string sqlQuery;
-                DataTable dTable = new DataTable();
-                DataGridViewTextBoxColumn dgvIdProject = new DataGridViewTextBoxColumn();
-                DataGridViewTextBoxColumn dgvProject = new DataGridViewTextBoxColumn();
-                try
-                {
-                    sqlQuery = "SELECT * FROM ProjectList";
-                    SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, dbConnect);
-                    adapter.Fill(dTable);
-                    dgvViewer.Rows.Clear();
-                    dgvViewer.Columns.Clear();
-                    dgvProject.Name = "Project";
-                    dgvProject.HeaderText = "Название проекта";
-                    dgvIdProject.Name = "idProject";
-                    dgvIdProject.HeaderText = "Порядковый номер";
-                    dgvIdProject.Visible = false;
-                    dgvViewer.Columns.Add(dgvIdProject);
-                    dgvViewer.Columns.Add(dgvProject);
-                    dgvViewer.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-                    dgvViewer.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-                    for (int i = 0; i < dTable.Rows.Count; i++)
-                        dgvViewer.Rows.Add(dTable.Rows[i].ItemArray);
-                }
-                catch (SQLiteException ex)
-                {
-                    MessageBox.Show("Ошибка: " + ex.Message);
-                }
+            
+            DataBase dataBase = new DataBase();            
+            DataGridViewTextBoxColumn dgvProject = new DataGridViewTextBoxColumn();
+            try
+            {                    
+                dgvViewer.Rows.Clear();
+                dgvViewer.Columns.Clear();
+                dgvProject.Name = "Project";
+                dgvProject.HeaderText = "Название проекта";                
+                dgvViewer.Columns.Add(dgvProject);
+                dgvViewer.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+                dgvViewer.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                for (int i = 0; i < dataBase.SelectColumn("ProjectList","Project").Rows.Count; i++)
+                    dgvViewer.Rows.Add(dataBase.SelectColumn("ProjectList","Project").Rows[i].ItemArray);
             }
-            else
+            catch (SQLiteException ex)
             {
-                MessageBox.Show("Необходимо создать или открыть файл базы данных!");
-            }                      
+                MessageBox.Show("Ошибка: " + ex.Message);
+            }                                 
         }
     }
 }
