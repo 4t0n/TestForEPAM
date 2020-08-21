@@ -34,17 +34,10 @@ namespace BugTrackingSystemWithSQlite
         }
 
         //Вызов формы для удаления проекта
-        public void DeleteNameProject()
+        public void DeleteNameProject(string cbProjectName)
         {
-            if (File.Exists(dbFileName))
-            {
-                FormDeleteProject formDeleteProject = new FormDeleteProject(dbFileName, dbConnect, dbCommand);
-                formDeleteProject.Show();
-            }
-            else
-            {
-                MessageBox.Show("Необходимо создать или открыть файл базы данных!");
-            }
+            DataBase dataBase = new DataBase();
+            dataBase.DelItem("ProjectList", "Project", cbProjectName);
         }
         
         //Показать список проектов

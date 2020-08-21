@@ -55,6 +55,7 @@
             this.lbProjectInTask = new System.Windows.Forms.Label();
             this.lbUserOnTask = new System.Windows.Forms.Label();
             this.bnShowLogs = new System.Windows.Forms.Button();
+            this.cbProjectName = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvViewer)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.gbProjects.SuspendLayout();
@@ -67,7 +68,7 @@
             this.dgvViewer.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvViewer.BackgroundColor = System.Drawing.SystemColors.Window;
             this.dgvViewer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvViewer.Location = new System.Drawing.Point(12, 241);
+            this.dgvViewer.Location = new System.Drawing.Point(12, 353);
             this.dgvViewer.Name = "dgvViewer";
             this.dgvViewer.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
             this.dgvViewer.Size = new System.Drawing.Size(924, 234);
@@ -76,7 +77,7 @@
             // bnAddNameProject
             // 
             this.bnAddNameProject.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.bnAddNameProject.Location = new System.Drawing.Point(6, 117);
+            this.bnAddNameProject.Location = new System.Drawing.Point(6, 113);
             this.bnAddNameProject.Name = "bnAddNameProject";
             this.bnAddNameProject.Size = new System.Drawing.Size(85, 35);
             this.bnAddNameProject.TabIndex = 6;
@@ -129,6 +130,7 @@
             // 
             // gbProjects
             // 
+            this.gbProjects.Controls.Add(this.cbProjectName);
             this.gbProjects.Controls.Add(this.bnDeleteProject);
             this.gbProjects.Controls.Add(this.lbProjectName);
             this.gbProjects.Controls.Add(this.bnAddNameProject);
@@ -136,7 +138,7 @@
             this.gbProjects.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.gbProjects.Location = new System.Drawing.Point(12, 45);
             this.gbProjects.Name = "gbProjects";
-            this.gbProjects.Size = new System.Drawing.Size(200, 181);
+            this.gbProjects.Size = new System.Drawing.Size(200, 280);
             this.gbProjects.TabIndex = 11;
             this.gbProjects.TabStop = false;
             this.gbProjects.Text = "ПРОЕКТЫ";
@@ -144,7 +146,7 @@
             // bnDeleteProject
             // 
             this.bnDeleteProject.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.bnDeleteProject.Location = new System.Drawing.Point(109, 117);
+            this.bnDeleteProject.Location = new System.Drawing.Point(6, 216);
             this.bnDeleteProject.Name = "bnDeleteProject";
             this.bnDeleteProject.Size = new System.Drawing.Size(85, 35);
             this.bnDeleteProject.TabIndex = 9;
@@ -171,7 +173,7 @@
             this.gbUsers.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.gbUsers.Location = new System.Drawing.Point(218, 45);
             this.gbUsers.Name = "gbUsers";
-            this.gbUsers.Size = new System.Drawing.Size(200, 181);
+            this.gbUsers.Size = new System.Drawing.Size(200, 280);
             this.gbUsers.TabIndex = 12;
             this.gbUsers.TabStop = false;
             this.gbUsers.Text = "ПОЛЬЗОВАТЕЛИ";
@@ -223,7 +225,7 @@
             this.gbTasks.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.gbTasks.Location = new System.Drawing.Point(424, 45);
             this.gbTasks.Name = "gbTasks";
-            this.gbTasks.Size = new System.Drawing.Size(200, 181);
+            this.gbTasks.Size = new System.Drawing.Size(200, 280);
             this.gbTasks.TabIndex = 13;
             this.gbTasks.TabStop = false;
             this.gbTasks.Text = "ЗАДАЧИ";
@@ -342,11 +344,21 @@
             this.bnShowLogs.UseVisualStyleBackColor = true;
             this.bnShowLogs.Click += new System.EventHandler(this.bnShowLogs_Click);
             // 
+            // cbProjectName
+            // 
+            this.cbProjectName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbProjectName.FormattingEnabled = true;
+            this.cbProjectName.Location = new System.Drawing.Point(6, 176);
+            this.cbProjectName.Name = "cbProjectName";
+            this.cbProjectName.Size = new System.Drawing.Size(188, 23);
+            this.cbProjectName.TabIndex = 10;
+            this.cbProjectName.Enter += new System.EventHandler(this.cbProjectName_Enter);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(948, 487);
+            this.ClientSize = new System.Drawing.Size(948, 599);
             this.Controls.Add(this.bnShowLogs);
             this.Controls.Add(this.lbUserOnTask);
             this.Controls.Add(this.lbProjectInTask);
@@ -405,6 +417,7 @@
         private System.Windows.Forms.Label lbProjectInTask;
         private System.Windows.Forms.Label lbUserOnTask;
         private System.Windows.Forms.Button bnShowLogs;
+        private System.Windows.Forms.ComboBox cbProjectName;
     }
 }
 

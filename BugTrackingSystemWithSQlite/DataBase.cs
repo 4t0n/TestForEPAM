@@ -88,6 +88,15 @@ namespace BugTrackingSystemWithSQlite
             dbCommand.ExecuteNonQuery();
         }
 
+        public void CreateTable(string tableName, string columnName)
+        {
+            string sqlQuery = "CREATE TABLE IF NOT EXISTS ProjectList (idProject INTEGER PRIMARY KEY AUTOINCREMENT, Project TEXT);CREATE TABLE IF NOT EXISTS UserList (idProject INTEGER PRIMARY KEY AUTOINCREMENT, User TEXT);CREATE TABLE IF NOT EXISTS TaskList (idTask INTEGER PRIMARY KEY AUTOINCREMENT, Task TEXT, Project TEXT, Theme TEXT, Type TEXT, Priority TEXT, User TEXT, Description TEXT);CREATE TABLE IF NOT EXISTS TriggerList (idTrigger INTEGER PRIMARY KEY AUTOINCREMENT, Trigger TEXT)"
+            dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
+            dbConnect.Open();
+            dbCommand.Connection = dbConnect;
+
+        }
+
         public void AddItem(string tableName, string columnName, string itemName)
         {
             if (File.Exists(dbFileName))
@@ -144,6 +153,16 @@ namespace BugTrackingSystemWithSQlite
             string sqlQuery;
             DataTable dTable = new DataTable();
             sqlQuery = "SELECT "+columnName+" FROM "+tableName+"";
+            SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, dbConnect);
+            adapter.Fill(dTable);
+            return dTable;
+        }
+
+        public DataTable SelectTable(string tableName)
+        {
+            string sqlQuery;
+            DataTable dTable = new DataTable();
+            sqlQuery = "SELECT * FROM " + tableName + "";
             SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, dbConnect);
             adapter.Fill(dTable);
             return dTable;

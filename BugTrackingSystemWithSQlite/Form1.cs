@@ -70,8 +70,22 @@ namespace BugTrackingSystemWithSQlite
         //Кнопка удаления проекта
         private void bnDeleteProject_Click(object sender, EventArgs e)
         {
-            Project project = new Project(dbFileName, dbConnect, dbCommand);
-            project.DeleteNameProject();            
+            if (File.Exists(dbFileName = DataBase.dbFileName))
+            {
+                if (cbProjectName.SelectedIndex >= 0)
+                {
+                    Project project = new Project(dbFileName, dbConnect, dbCommand);
+                    project.DeleteNameProject(cbProjectName.SelectedItem.ToString());                    
+                }
+                else
+                {
+                    MessageBox.Show("Введите название проекта!");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Необходимо создать или открыть файл базы данных!");
+            }
         }
 
         //Кнопка добавления пользователя
@@ -186,13 +200,22 @@ namespace BugTrackingSystemWithSQlite
         {
             DataBase dataBase = new DataBase();
             cbTasksInProject.Items.Clear();
-
+            cbProjectName.Items.Clear();
             for (int i = 0; i < dataBase.SelectColumn("ProjectList","Project").Rows.Count; i++)
             {
                 cbTasksInProject.Items.AddRange(dataBase.SelectColumn("ProjectList", "Project").Rows[i].ItemArray);
+                cbProjectName.Items.AddRange(dataBase.SelectColumn("ProjectList", "Project").Rows[i].ItemArray);
             }
         }
         private void cbTasksInProject_Enter(object sender, EventArgs e)
+        {
+            if (File.Exists(dbFileName = DataBase.dbFileName))
+            {
+                fillCbTasksInProject();
+            }
+        }
+
+        private void cbProjectName_Enter(object sender, EventArgs e)
         {
             if (File.Exists(dbFileName = DataBase.dbFileName))
             {
@@ -256,5 +279,7 @@ namespace BugTrackingSystemWithSQlite
                 MessageBox.Show("Необходимо создать или открыть файл базы данных!");
             }
         }
+
+        
     }    
 }
