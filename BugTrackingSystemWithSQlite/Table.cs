@@ -21,7 +21,18 @@ namespace BugTrackingSystemWithSQlite
         public string TableName { get { return tableName; } }
         public string ColumnName { get { return columnName; } }
 
+        //Создать таблицу
+        public void CreateTable ()
+        {
+            DataBase dataBase = new DataBase();
+            dataBase.CreateTable(tableName);
+        }
 
+        public void AddColumn()
+        {
+            DataBase dataBase = new DataBase();
+            dataBase.AddColumn(tableName, columnName);
+        }
 
         //Добавить значение в ячейку столбца ColumnName
         public void AddItem(string ItemName)

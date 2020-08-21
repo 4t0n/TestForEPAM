@@ -88,13 +88,24 @@ namespace BugTrackingSystemWithSQlite
             dbCommand.ExecuteNonQuery();
         }
 
-        public void CreateTable(string tableName, string columnName)
+        public void CreateTable(string tableName)
         {
-            string sqlQuery = "CREATE TABLE IF NOT EXISTS ProjectList (idProject INTEGER PRIMARY KEY AUTOINCREMENT, Project TEXT);CREATE TABLE IF NOT EXISTS UserList (idProject INTEGER PRIMARY KEY AUTOINCREMENT, User TEXT);CREATE TABLE IF NOT EXISTS TaskList (idTask INTEGER PRIMARY KEY AUTOINCREMENT, Task TEXT, Project TEXT, Theme TEXT, Type TEXT, Priority TEXT, User TEXT, Description TEXT);CREATE TABLE IF NOT EXISTS TriggerList (idTrigger INTEGER PRIMARY KEY AUTOINCREMENT, Trigger TEXT)"
+            string sqlQuery = "CREATE TABLE IF NOT EXISTS "+tableName+"";
             dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
             dbConnect.Open();
             dbCommand.Connection = dbConnect;
+            dbCommand.CommandText = sqlQuery;
+            dbCommand.ExecuteNonQuery();
+        }
 
+        public void AddColumn (string tableName, string columnName)
+        {
+            string sqlQuery = "ALTER TABLE "+tableName+" ADD COLUMN "+columnName+" TEXT";
+            dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
+            dbConnect.Open();
+            dbCommand.Connection = dbConnect;
+            dbCommand.CommandText = sqlQuery;
+            dbCommand.ExecuteNonQuery();
         }
 
         public void AddItem(string tableName, string columnName, string itemName)
