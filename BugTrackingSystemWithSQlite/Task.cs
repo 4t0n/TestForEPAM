@@ -1,57 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Data.SQLite;
-using System.IO;
-using System.Diagnostics;
 
 namespace BugTrackingSystemWithSQlite
 {
-    class Task
+    class Task:Table
     {
-        public string dbFileName;
-        public SQLiteConnection dbConnect;
-        public SQLiteCommand dbCommand;
-
-        public Task(string dbFileName, SQLiteConnection dbConnect, SQLiteCommand dbCommand)
+        public Task():base("TaskList","Task","Project","Theme","Type","Priority","User","Description")
         {
-            this.dbFileName = dbFileName;
-            this.dbConnect = dbConnect;
-            this.dbCommand = dbCommand;
+
         }
 
-        //Вызов формы для добавления проекта
-        public void AddNameTask()
+        public override void AddColumn()
         {
-            if (File.Exists(dbFileName))
-            {
-                FormAddTask formAddTask = new FormAddTask(dbFileName, dbConnect, dbCommand);
-                formAddTask.Show();
-            }
-            else
-            {
-                MessageBox.Show("Необходимо создать или открыть файл базы данных!");
-            }
-        }
-
-        //Вызов формы для удаления проекта
-        public void DeleteNameTask()
-        {
-            if (File.Exists(dbFileName))
-            {
-                FormDeleteTask formDeleteTask = new FormDeleteTask(dbFileName, dbConnect, dbCommand);
-                formDeleteTask.Show();
-            }
-            else
-            {
-                MessageBox.Show("Необходимо создать или открыть файл базы данных!");
-            }
+            DataBase dataBase = new DataBase();
+            dataBase.AddColumn(TableName, ColumnName, ColumnName1, ColumnName2, ColumnName3, ColumnName4, ColumnName5, ColumnName6);
         }
         /*
         //Показать список проектов
@@ -111,7 +76,7 @@ namespace BugTrackingSystemWithSQlite
         }*/
 
         //Показать список задач в выбранном проекте
-        public void ShowTasksInProject(DataGridView dgvViewer, string cbTasksInProject)
+        /*public void ShowTasksInProject(DataGridView dgvViewer, string cbTasksInProject)
         {
             string sqlQuery;
             DataTable dTable = new DataTable();
@@ -220,6 +185,6 @@ namespace BugTrackingSystemWithSQlite
             {
                 MessageBox.Show("Ошибка: " + ex.Message);
             }
-        }
+        }*/
     }
 }
