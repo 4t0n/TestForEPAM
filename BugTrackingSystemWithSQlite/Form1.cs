@@ -34,15 +34,18 @@ namespace BugTrackingSystemWithSQlite
         private void toolSpFileCreate_Click(object sender, EventArgs e)
         {            
             DataBase.CreateFile();
-            project.CreateTable();
-            project.AddColumn(project.ColumnName);
-            project.CreateTrigger("Добавлен проект.", "Удалён проект.");
-            user.CreateTable();
-            user.AddColumn(user.ColumnName);
-            user.CreateTrigger("Добавлен пользователь.", "Удалён пользователь.");
-            task.CreateTable();
-            task.AddColumn(task.ColumnName, task.ColumnName1, task.ColumnName2, task.ColumnName3, task.ColumnName4, task.ColumnName5, task.ColumnName6);
-            task.CreateTrigger("Добавлена задача.", "Удалена задача.");
+            if (File.Exists(DataBase.dbFileName))
+            {
+                project.CreateTable();
+                project.AddColumn(project.ColumnName);
+                project.CreateTrigger("Добавлен проект.", "Удалён проект.");
+                user.CreateTable();
+                user.AddColumn(user.ColumnName);
+                user.CreateTrigger("Добавлен пользователь.", "Удалён пользователь.");
+                task.CreateTable();
+                task.AddColumn(task.ColumnName, task.ColumnName1, task.ColumnName2, task.ColumnName3, task.ColumnName4, task.ColumnName5, task.ColumnName6);
+                task.CreateTrigger("Добавлена задача.", "Удалена задача.");
+            }            
         }
 
         //Открытие файла
