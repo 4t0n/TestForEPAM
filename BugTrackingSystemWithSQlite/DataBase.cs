@@ -16,6 +16,8 @@ namespace BugTrackingSystemWithSQlite
 {
     public static class DataBase
     {
+        //Набор инструментов для работы с БД
+
         public static string dbFileName;
         public static SQLiteConnection dbConnect = new SQLiteConnection();
         public static SQLiteCommand dbCommand = new SQLiteCommand();

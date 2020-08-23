@@ -58,7 +58,9 @@ namespace BugTrackingSystemWithSQlite
             {
                 if (tbProjectName.Text != "")
                 {
+                    ///////
                     project.AddItem(tbProjectName.Text,project.ColumnName);
+                    ///////
                     tbProjectName.Clear();
                 }
                 else
@@ -78,10 +80,15 @@ namespace BugTrackingSystemWithSQlite
             if (File.Exists(DataBase.dbFileName))
             {
                 if (cbProjectName.SelectedIndex >= 0)
-                {                    
-                    project.DelItem(cbProjectName.SelectedItem.ToString(), project.ColumnName);
-                    task.DelItem(cbProjectName.SelectedItem.ToString(), task.ColumnName1);
-                    cbProjectName.SelectedIndex = -1;
+                {
+                    DialogResult dialogResult = MessageBox.Show("Удаление проекта приведёт к удалению задачи, входящей в состав данного проекта. Удалить проект?", "Внимание!", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        ///////
+                        project.DelItemFrom2Table(cbProjectName.SelectedItem.ToString(), task.TableName, project.ColumnName, task.ColumnName1);
+                        ///////
+                        cbProjectName.SelectedIndex = -1;
+                    }                    
                 }
                 else
                 {
@@ -101,7 +108,9 @@ namespace BugTrackingSystemWithSQlite
             {
                 if (tbUserName.Text != "")
                 {
+                    ///////
                     user.AddItem(tbUserName.Text, user.ColumnName);
+                    ///////
                     tbUserName.Clear();
                 }
                 else
@@ -122,9 +131,14 @@ namespace BugTrackingSystemWithSQlite
             {
                 if (cbUserName.SelectedIndex >= 0)
                 {
-                    user.DelItem(cbUserName.SelectedItem.ToString(), user.ColumnName);
-                    task.DelItem(cbUserName.SelectedItem.ToString(), task.ColumnName5);
-                    cbUserName.SelectedIndex = -1;
+                    DialogResult dialogResult = MessageBox.Show("Удаление пользователя приведёт к удалению задачи, исполнителем которой он является. Удалить пользователя?", "Внимание!", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        ///////
+                        user.DelItemFrom2Table(cbUserName.SelectedItem.ToString(), task.TableName, user.ColumnName, task.ColumnName5);
+                        ///////
+                        cbUserName.SelectedIndex = -1;
+                    }                    
                 }
                 else
                 {
@@ -150,8 +164,10 @@ namespace BugTrackingSystemWithSQlite
                         tbThemeName.Text, tbTypeName.Text, tbPriorityName.Text, 
                         cbUserNameForTask.SelectedItem.ToString(), tbDescriptionName.Text};
                     string AllRow = string.Join("', '", array);
+                    ///////
                     task.AddItem(AllRow, task.ColumnName, task.ColumnName1, task.ColumnName2, task.ColumnName3, 
                         task.ColumnName4, task.ColumnName5, task.ColumnName6);
+                    ///////
                 }
                 else
                 {
@@ -171,7 +187,9 @@ namespace BugTrackingSystemWithSQlite
             {
                 if (cbTaskName.SelectedIndex >= 0)
                 {
-                    task.DelItem(cbTaskName.SelectedItem.ToString(),task.ColumnName);                    
+                    ///////
+                    task.DelItem(cbTaskName.SelectedItem.ToString(),task.ColumnName);
+                    ///////
                     cbTaskName.SelectedIndex = -1;
                 }
                 else
@@ -200,8 +218,10 @@ namespace BugTrackingSystemWithSQlite
                     dgvViewer.Columns.Add(dgvProject);
                     dgvViewer.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
                     dgvViewer.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                    ///////
                     for (int i = 0; i < project.SelectColumn(project.ColumnName).Rows.Count; i++)
                         dgvViewer.Rows.Add(project.SelectColumn(project.ColumnName).Rows[i].ItemArray);
+                    ///////
                 }
                 catch (SQLiteException ex)
                 {
@@ -229,8 +249,10 @@ namespace BugTrackingSystemWithSQlite
                     dgvViewer.Columns.Add(dgvUser);
                     dgvViewer.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
                     dgvViewer.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                    ///////
                     for (int i = 0; i < user.SelectColumn(user.ColumnName).Rows.Count; i++)
                         dgvViewer.Rows.Add(user.SelectColumn(user.ColumnName).Rows[i].ItemArray);
+                    ///////
                 }
                 catch (SQLiteException ex)
                 {
@@ -253,8 +275,11 @@ namespace BugTrackingSystemWithSQlite
                     try
                     {
                         CreateTaskTable();
+                        ///////
                         for (int i = 0; i < task.SelectTableWhere("Project", cbTasksInProject.SelectedItem.ToString()).Rows.Count; i++)
                             dgvViewer.Rows.Add(task.SelectTableWhere("Project", cbTasksInProject.SelectedItem.ToString()).Rows[i].ItemArray);
+                        ///////
+                        cbTasksInProject.SelectedIndex = -1;
                     }
                     catch (SQLiteException ex)
                     {
@@ -282,8 +307,11 @@ namespace BugTrackingSystemWithSQlite
                     try
                     {
                         CreateTaskTable();
+                        ///////
                         for (int i = 0; i < task.SelectTableWhere("User", cbTasksOnUser.SelectedItem.ToString()).Rows.Count; i++)
                             dgvViewer.Rows.Add(task.SelectTableWhere("User", cbTasksOnUser.SelectedItem.ToString()).Rows[i].ItemArray);
+                        ///////
+                        cbTasksOnUser.SelectedIndex = -1;
                     }
                     catch (SQLiteException ex)
                     {
@@ -349,12 +377,14 @@ namespace BugTrackingSystemWithSQlite
             cbTasksInProject.Items.Clear();
             cbProjectName.Items.Clear();
             cbProjectNameForTask.Items.Clear();
+            ///////
             for (int i = 0; i < project.SelectColumn(project.ColumnName).Rows.Count; i++)
             {
                 cbTasksInProject.Items.AddRange(project.SelectColumn(project.ColumnName).Rows[i].ItemArray);
                 cbProjectName.Items.AddRange(project.SelectColumn(project.ColumnName).Rows[i].ItemArray);
                 cbProjectNameForTask.Items.AddRange(project.SelectColumn(project.ColumnName).Rows[i].ItemArray);
             }
+            ///////
         }
 
         private void cbProjectName_DropDown(object sender, EventArgs e)
@@ -387,12 +417,14 @@ namespace BugTrackingSystemWithSQlite
             cbTasksOnUser.Items.Clear();
             cbUserName.Items.Clear();
             cbUserNameForTask.Items.Clear();
+            ///////
             for (int i = 0; i < user.SelectColumn(user.ColumnName).Rows.Count; i++)
             {
                 cbTasksOnUser.Items.AddRange(user.SelectColumn(user.ColumnName).Rows[i].ItemArray);
                 cbUserName.Items.AddRange(user.SelectColumn(user.ColumnName).Rows[i].ItemArray);
                 cbUserNameForTask.Items.AddRange(user.SelectColumn(user.ColumnName).Rows[i].ItemArray);
             }
+            ///////
         }
         private void cbUserName_DropDown(object sender, EventArgs e)
         {
@@ -421,11 +453,13 @@ namespace BugTrackingSystemWithSQlite
         //Заполнение списка задач в ComboBox
         private void fillCbTasks()
         {            
-            cbTaskName.Items.Clear();            
+            cbTaskName.Items.Clear();
+            ///////
             for (int i = 0; i < task.SelectColumn(task.ColumnName).Rows.Count; i++)
             {
                 cbTaskName.Items.AddRange(task.SelectColumn(task.ColumnName).Rows[i].ItemArray);                
             }
+            ///////
         }
 
         private void cbTaskName_DropDown(object sender, EventArgs e)
@@ -455,8 +489,10 @@ namespace BugTrackingSystemWithSQlite
                     dgvViewer.Columns.Add(dgvTrigger);
                     dgvViewer.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
                     dgvViewer.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                    ///////
                     for (int i = 0; i < DataBase.SelectTable("TriggerList").Rows.Count; i++)
                         dgvViewer.Rows.Add(DataBase.SelectTable("TriggerList").Rows[i].ItemArray);
+                    ///////
                 }
                 catch (SQLiteException ex)
                 {

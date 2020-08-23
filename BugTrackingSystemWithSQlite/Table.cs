@@ -10,6 +10,8 @@ namespace BugTrackingSystemWithSQlite
 {
     class Table
     {
+        //Шаблон таблицы
+
         private string tableName;
         private string columnName;
         private string columnName1;
@@ -82,6 +84,13 @@ namespace BugTrackingSystemWithSQlite
         public void DelItem(string ItemName, string ColumnName)
         {            
             DataBase.DelItem(TableName, ItemName, ColumnName);
+        }
+
+        //Удалить строки из двух таблиц с двумя одинаковыми значениями ячеек в двух столбцах
+        public void DelItemFrom2Table(string ItemName, string SecondTableName, string FirstColumnName, string SecondColumnName)
+        {
+            DelItem(ItemName, FirstColumnName);
+            DataBase.DelItem(SecondTableName, ItemName, SecondColumnName);
         }
 
         //Извлечь все данные из таблицы TableName
