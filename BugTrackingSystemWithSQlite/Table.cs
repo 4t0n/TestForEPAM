@@ -24,59 +24,31 @@ namespace BugTrackingSystemWithSQlite
             this.tableName = tableName;
             this.columnName = columnName;            
         }
-        public Table(string tableName, string columnName, string columnName1)
-        {
-            this.tableName = tableName;
-            this.columnName = columnName;
+        public Table(string tableName, string columnName, string columnName1): this(tableName,columnName)
+        {            
             this.columnName1 = columnName1;
         }
-        public Table(string tableName, string columnName, string columnName1, string columnName2)
-        {
-            this.tableName = tableName;
-            this.columnName = columnName;
-            this.columnName1 = columnName1;
+        public Table(string tableName, string columnName, string columnName1, string columnName2): this(tableName,columnName,columnName1)
+        {            
             this.columnName2 = columnName2;
         }
-        public Table(string tableName, string columnName, string columnName1, string columnName2, string columnName3)
-        {
-            this.tableName = tableName;
-            this.columnName = columnName;
-            this.columnName1 = columnName1;
-            this.columnName2 = columnName2;
+        public Table(string tableName, string columnName, string columnName1, string columnName2, string columnName3):this(tableName,columnName,columnName1,columnName2)
+        {            
             this.columnName3 = columnName3;
         }
-        public Table(string tableName, string columnName, string columnName1, string columnName2, string columnName3, string columnName4)
-        {
-            this.tableName = tableName;
-            this.columnName = columnName;
-            this.columnName1 = columnName1;
-            this.columnName2 = columnName2;
-            this.columnName3 = columnName3;
+        public Table(string tableName, string columnName, string columnName1, string columnName2, string columnName3, string columnName4):this(tableName,columnName,columnName1,columnName2,columnName3)
+        {            
             this.columnName4 = columnName4;
         }
-        public Table(string tableName, string columnName, string columnName1, string columnName2, string columnName3, string columnName4, string columnName5)
-        {
-            this.tableName = tableName;
-            this.columnName = columnName;
-            this.columnName1 = columnName1;
-            this.columnName2 = columnName2;
-            this.columnName3 = columnName3;
-            this.columnName4 = columnName4;
-            this.columnName4 = columnName5;
-        }
-        public Table(string tableName, string columnName, string columnName1, string columnName2, string columnName3, string columnName4, string columnName5, string columnName6)
-        {
-            this.tableName = tableName;
-            this.columnName = columnName;
-            this.columnName1 = columnName1;
-            this.columnName2 = columnName2;
-            this.columnName3 = columnName3;
-            this.columnName4 = columnName4;
+        public Table(string tableName, string columnName, string columnName1, string columnName2, string columnName3, string columnName4, string columnName5): this(tableName, columnName, columnName1, columnName2, columnName3,columnName4)
+        {            
             this.columnName5 = columnName5;
+        }
+        public Table(string tableName, string columnName, string columnName1, string columnName2, string columnName3, string columnName4, string columnName5, string columnName6) : this(tableName, columnName, columnName1, columnName2, columnName3, columnName4,columnName5)
+        {            
             this.columnName6 = columnName6;
         }
-        
-        
+                
 
         public string TableName { get { return tableName; } }
         public string ColumnName { get { return columnName; } }
@@ -106,10 +78,10 @@ namespace BugTrackingSystemWithSQlite
         public virtual void AddItem(string ItemName)
         {
             DataBase dataBase = new DataBase();
-            dataBase.AddItem(TableName, ColumnName, ItemName);
+            dataBase.AddItem(TableName, ItemName, ColumnName);
         }
 
-        //Удалить значение из ячейки столбца ColumnName
+        //Удалить строку, где значение столбца ColumnName равно ItemName
         public virtual void DelItem(string ItemName)
         {
             DataBase dataBase = new DataBase();
@@ -121,6 +93,13 @@ namespace BugTrackingSystemWithSQlite
         {
             DataBase dataBase = new DataBase();
             return dataBase.SelectTable(TableName);
+        }
+
+        //Извлечь все данные из таблицы TableName, где столбец ColumnName имеет значение cellValue
+        public DataTable SelectTableWhere(string columnValue, string cellValue)
+        {
+            DataBase dataBase = new DataBase();
+            return dataBase.SelectTableWhere(TableName,columnValue,cellValue);
         }
 
         //Извлечь все данные из столбца ColumnName

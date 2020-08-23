@@ -45,7 +45,7 @@ namespace BugTrackingSystemWithSQlite
                     {
                         MessageBox.Show("Ошибка: " + ex.Message);
                     }
-                }                
+                }
             }
         }
 
@@ -58,159 +58,47 @@ namespace BugTrackingSystemWithSQlite
             openFileDialog.RestoreDirectory = true;
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                dbFileName = openFileDialog.FileName;                
+                dbFileName = openFileDialog.FileName;
             }
-        }
-
-        public void CreateDataBase (string tableName)
-        {            
-            /*dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
-            dbConnect.Open();
-            dbCommand.Connection = dbConnect;
-            dbCommand.CommandText = "CREATE TABLE IF NOT EXISTS ProjectList (idProject INTEGER PRIMARY KEY AUTOINCREMENT, Project TEXT);CREATE TABLE IF NOT EXISTS UserList (idProject INTEGER PRIMARY KEY AUTOINCREMENT, User TEXT);CREATE TABLE IF NOT EXISTS TaskList (idTask INTEGER PRIMARY KEY AUTOINCREMENT, Task TEXT, Project TEXT, Theme TEXT, Type TEXT, Priority TEXT, User TEXT, Description TEXT);CREATE TABLE IF NOT EXISTS TriggerList (idTrigger INTEGER PRIMARY KEY AUTOINCREMENT, Trigger TEXT)";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS ProjectAddTrigger AFTER INSERT ON ProjectList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Добавлен проект.'); END";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS ProjectDelTrigger AFTER DELETE ON ProjectList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Удалён проект.'); END";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS UserAddTrigger AFTER INSERT ON UserList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Добавлен пользователь.'); END";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS UserDelTrigger AFTER DELETE ON USerList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Удалён пользователь.'); END";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS TaskAddTrigger AFTER INSERT ON TaskList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Добавлена задача.'); END";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS TaskDelTrigger AFTER DELETE ON TaskList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Удалена задача.'); END";
-            dbCommand.ExecuteNonQuery();*/
         }
 
         //Создать таблицу
         public void CreateTable(string tableName)
         {
-            string sqlQuery = "CREATE TABLE IF NOT EXISTS "+tableName+" (idProject INTEGER PRIMARY KEY AUTOINCREMENT)";
+            string sqlQuery = "CREATE TABLE IF NOT EXISTS " + tableName + " (idProject INTEGER PRIMARY KEY AUTOINCREMENT)";
             dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
             dbConnect.Open();
             dbCommand.Connection = dbConnect;
             dbCommand.CommandText = sqlQuery;
             dbCommand.ExecuteNonQuery();
         }
-        //Создать 1 колонку
-        public void AddColumn (string tableName, string columnName)
-        {
-            string sqlQuery = "ALTER TABLE "+tableName+" ADD COLUMN "+columnName+" TEXT";
-            dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
-            dbConnect.Open();
-            dbCommand.Connection = dbConnect;
-            dbCommand.CommandText = sqlQuery;
-            dbCommand.ExecuteNonQuery();
-        }
-        //Создать 2 колонки
-        public void AddColumn(string tableName, string columnName, string columnName1)
-        {            
-            dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
-            dbConnect.Open();
-            dbCommand.Connection = dbConnect;
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " TEXT";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName1 + " TEXT";
-            dbCommand.ExecuteNonQuery();
 
-        }
-        //Создать 3 колонки
-        public void AddColumn(string tableName, string columnName, string columnName1, string columnName2)
-        {            
-            dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
-            dbConnect.Open();
-            dbCommand.Connection = dbConnect;
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " TEXT";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName1 + " TEXT";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName2 + " TEXT";
-            dbCommand.ExecuteNonQuery();
-        }
-        //Создать 4 колонки
-        public void AddColumn(string tableName, string columnName, string columnName1, string columnName2, string columnName3)
-        {            
-            dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
-            dbConnect.Open();
-            dbCommand.Connection = dbConnect;
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " TEXT";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName1 + " TEXT";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName2 + " TEXT";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName3 + " TEXT";
-            dbCommand.ExecuteNonQuery();
-        }
-        //Создать 5 колонок
-        public void AddColumn(string tableName, string columnName, string columnName1, string columnName2, string columnName3, string columnName4)
+        //Создать колонки
+        public void AddColumn(string tableName, params string[] columnName)
         {
-            dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
-            dbConnect.Open();
-            dbCommand.Connection = dbConnect;
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " TEXT";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName1 + " TEXT";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName2 + " TEXT";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName3 + " TEXT";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName4 + " TEXT";
-            dbCommand.ExecuteNonQuery();
-        }
-        //Создать 6 колонок
-        public void AddColumn(string tableName, string columnName, string columnName1, string columnName2, string columnName3, string columnName4, string columnName5)
-        {
-            dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
-            dbConnect.Open();
-            dbCommand.Connection = dbConnect;
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " TEXT";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName1 + " TEXT";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName2 + " TEXT";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName3 + " TEXT";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName4 + " TEXT";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName5 + " TEXT";
-            dbCommand.ExecuteNonQuery();
-        }
-        //Создать 7 колонок
-        public void AddColumn(string tableName, string columnName, string columnName1, string columnName2, string columnName3, string columnName4, string columnName5, string columnName6)
-        {
-            dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
-            dbConnect.Open();
-            dbCommand.Connection = dbConnect;
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " TEXT";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName1 + " TEXT";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName2 + " TEXT";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName3 + " TEXT";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName4 + " TEXT";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName5 + " TEXT";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName6 + " TEXT";
-            dbCommand.ExecuteNonQuery();
-        }
-
-        //Добавить значение в колонку
-        public void AddItem(string tableName, string columnName, string itemName)
-        {
-            if (File.Exists(dbFileName))
-            {                
+            string sqlQuery;
+            for (int i = 0; i < columnName.Length; i++)
+            {
+                sqlQuery = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName[i] + " TEXT";
                 dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
                 dbConnect.Open();
                 dbCommand.Connection = dbConnect;
-                string sqlQuery = "INSERT INTO "+ tableName +" ('"+columnName+"') values ('" +
-                        itemName + "')";
+                dbCommand.CommandText = sqlQuery;
+                dbCommand.ExecuteNonQuery();
+            }
+        }
+
+        //Добавить значение в колонку
+        public void AddItem(string tableName, string itemName, params string[] columnName)
+        {
+            if (File.Exists(dbFileName))
+            {
+                string JoinColumnName = string.Join("', '", columnName);
+                dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
+                dbConnect.Open();
+                dbCommand.Connection = dbConnect;
+                string sqlQuery = "INSERT INTO " + tableName + " ('" + JoinColumnName + "') VALUES ('" +
+                        itemName + "')";                
                 try
                 {
                     dbCommand.CommandText = sqlQuery;
@@ -236,7 +124,7 @@ namespace BugTrackingSystemWithSQlite
                 dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
                 dbConnect.Open();
                 dbCommand.Connection = dbConnect;
-                string sqlQuery = "DELETE FROM "+tableName+" WHERE "+columnName+" = '" + itemName + "'";
+                string sqlQuery = "DELETE FROM " + tableName + " WHERE " + columnName + " = '" + itemName + "'";
                 try
                 {
                     dbCommand.CommandText = sqlQuery;
@@ -259,19 +147,31 @@ namespace BugTrackingSystemWithSQlite
         {
             string sqlQuery;
             DataTable dTable = new DataTable();
-            sqlQuery = "SELECT "+columnName+" FROM "+tableName+"";
-            dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");            
+            sqlQuery = "SELECT " + columnName + " FROM " + tableName + "";
+            dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
             SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, dbConnect);
             adapter.Fill(dTable);
             return dTable;
         }
 
-        //Выжелить таблицу
+        //Выделить таблицу
         public DataTable SelectTable(string tableName)
         {
             string sqlQuery;
             DataTable dTable = new DataTable();
             sqlQuery = "SELECT * FROM " + tableName + "";
+            dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
+            SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, dbConnect);
+            adapter.Fill(dTable);
+            return dTable;
+        }
+
+        //Выделить строки, где колонка columnName имеет значение cellValue
+        public DataTable SelectTableWhere(string tableName, string columnName, string cellValue)
+        {
+            string sqlQuery;
+            DataTable dTable = new DataTable();
+            sqlQuery = "SELECT * FROM " + tableName + " WHERE "+columnName+" = "+cellValue+"" ;
             dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
             SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, dbConnect);
             adapter.Fill(dTable);

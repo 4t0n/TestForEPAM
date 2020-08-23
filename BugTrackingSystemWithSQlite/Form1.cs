@@ -143,8 +143,23 @@ namespace BugTrackingSystemWithSQlite
         //Кнопка добавления задачи
         private void bnAddTask_Click(object sender, EventArgs e)
         {
-            //Task task = new Task(dbFileName, dbConnect, dbCommand);
-            //task.AddNameTask();
+            if (File.Exists(dbFileName = DataBase.dbFileName))
+            {
+                if (tbTaskName.Text != "" && tbDescriptionName.Text != "" && tbPriorityName.Text != "" && tbThemeName.Text != "" && tbTypeName.Text != "" && cbProjectNameForTask.Text != "" && cbUserNameForTask.Text != "")
+                {
+                    string [] array = { tbTaskName.Text, cbProjectNameForTask.SelectedItem.ToString(), tbThemeName.Text, tbTypeName.Text, tbPriorityName.Text, cbUserNameForTask.SelectedItem.ToString(), tbDescriptionName.Text};
+                    string AllRow = string.Join("', '", array);
+                    task.AddItem(AllRow);
+                }
+                else
+                {
+                    MessageBox.Show("Введите имя пользователя!");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Необходимо создать или открыть файл базы данных!");
+            }
         }
 
         //Кнопка удаления задачи
@@ -215,56 +230,132 @@ namespace BugTrackingSystemWithSQlite
         //Показать список задач в проекте
         private void bnShowTasksInProject_Click(object sender, EventArgs e)
         {
-            /*Task task = new Task(dbFileName, dbConnect, dbCommand);            
-            if (File.Exists(dbFileName))
+            if (File.Exists(dbFileName = DataBase.dbFileName))
             {
-                if (cbTasksInProject.SelectedIndex >= 0)
+                DataGridViewTextBoxColumn dgvIdTask = new DataGridViewTextBoxColumn();
+                DataGridViewTextBoxColumn dgvTask = new DataGridViewTextBoxColumn();
+                DataGridViewTextBoxColumn dgvProject = new DataGridViewTextBoxColumn();
+                DataGridViewTextBoxColumn dgvTheme = new DataGridViewTextBoxColumn();
+                DataGridViewTextBoxColumn dgvType = new DataGridViewTextBoxColumn();
+                DataGridViewTextBoxColumn dgvPriority = new DataGridViewTextBoxColumn();
+                DataGridViewTextBoxColumn dgvUser = new DataGridViewTextBoxColumn();
+                DataGridViewTextBoxColumn dgvDescription = new DataGridViewTextBoxColumn();
+                try
                 {
-                    task.ShowTasksInProject(dgvViewer, cbTasksInProject.SelectedItem.ToString());
+                    dgvViewer.Rows.Clear();
+                    dgvViewer.Columns.Clear();
+                    dgvIdTask.Name = "idTask";
+                    dgvIdTask.HeaderText = "Порядковый номер";
+                    dgvTask.Name = "Task";
+                    dgvTask.HeaderText = "Название задачи";
+                    dgvProject.Name = "Project";
+                    dgvProject.HeaderText = "Проект";
+                    dgvTheme.Name = "Theme";
+                    dgvTheme.HeaderText = "Тема";
+                    dgvType.Name = "Type";
+                    dgvType.HeaderText = "Тип";
+                    dgvPriority.Name = "Priority";
+                    dgvPriority.HeaderText = "Приоритет";
+                    dgvUser.Name = "User";
+                    dgvUser.HeaderText = "Исполнитель";
+                    dgvDescription.Name = "Description";
+                    dgvDescription.HeaderText = "Описание";
+                    dgvIdTask.Visible = false;
+                    dgvViewer.Columns.Add(dgvIdTask);
+                    dgvViewer.Columns.Add(dgvTask);
+                    dgvViewer.Columns.Add(dgvProject);
+                    dgvViewer.Columns.Add(dgvTheme);
+                    dgvViewer.Columns.Add(dgvType);
+                    dgvViewer.Columns.Add(dgvPriority);
+                    dgvViewer.Columns.Add(dgvUser);
+                    dgvViewer.Columns.Add(dgvDescription);
+                    dgvViewer.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+                    dgvViewer.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                    for (int i = 0; i < task.SelectTableWhere("Project",cbTasksInProject.SelectedItem.ToString()).Rows.Count; i++)
+                        dgvViewer.Rows.Add(task.SelectTableWhere("Project", cbTasksInProject.SelectedItem.ToString()).Rows[i].ItemArray);
                 }
-                else
+                catch (SQLiteException ex)
                 {
-                    MessageBox.Show("Выберите проект!");
+                    MessageBox.Show("Ошибка: " + ex.Message);
                 }
             }
             else
             {
                 MessageBox.Show("Необходимо создать или открыть файл базы данных!");
-            }*/
+            }
         }
 
         //Показать список задач на исполнителе
         private void bnShowTasksOnUser_Click(object sender, EventArgs e)
         {
-            /*Task task = new Task(dbFileName, dbConnect, dbCommand);
-            if (File.Exists(dbFileName))
+            if (File.Exists(dbFileName = DataBase.dbFileName))
             {
-                if (cbTasksOnUser.SelectedIndex >= 0)
+                DataGridViewTextBoxColumn dgvIdTask = new DataGridViewTextBoxColumn();
+                DataGridViewTextBoxColumn dgvTask = new DataGridViewTextBoxColumn();
+                DataGridViewTextBoxColumn dgvProject = new DataGridViewTextBoxColumn();
+                DataGridViewTextBoxColumn dgvTheme = new DataGridViewTextBoxColumn();
+                DataGridViewTextBoxColumn dgvType = new DataGridViewTextBoxColumn();
+                DataGridViewTextBoxColumn dgvPriority = new DataGridViewTextBoxColumn();
+                DataGridViewTextBoxColumn dgvUser = new DataGridViewTextBoxColumn();
+                DataGridViewTextBoxColumn dgvDescription = new DataGridViewTextBoxColumn();
+                try
                 {
-                    task.ShowTasksOnUser(dgvViewer, cbTasksOnUser.SelectedItem.ToString());
+                    dgvViewer.Rows.Clear();
+                    dgvViewer.Columns.Clear();
+                    dgvIdTask.Name = "idTask";
+                    dgvIdTask.HeaderText = "Порядковый номер";
+                    dgvTask.Name = "Task";
+                    dgvTask.HeaderText = "Название задачи";
+                    dgvProject.Name = "Project";
+                    dgvProject.HeaderText = "Проект";
+                    dgvTheme.Name = "Theme";
+                    dgvTheme.HeaderText = "Тема";
+                    dgvType.Name = "Type";
+                    dgvType.HeaderText = "Тип";
+                    dgvPriority.Name = "Priority";
+                    dgvPriority.HeaderText = "Приоритет";
+                    dgvUser.Name = "User";
+                    dgvUser.HeaderText = "Исполнитель";
+                    dgvDescription.Name = "Description";
+                    dgvDescription.HeaderText = "Описание";
+                    dgvIdTask.Visible = false;
+                    dgvViewer.Columns.Add(dgvIdTask);
+                    dgvViewer.Columns.Add(dgvTask);
+                    dgvViewer.Columns.Add(dgvProject);
+                    dgvViewer.Columns.Add(dgvTheme);
+                    dgvViewer.Columns.Add(dgvType);
+                    dgvViewer.Columns.Add(dgvPriority);
+                    dgvViewer.Columns.Add(dgvUser);
+                    dgvViewer.Columns.Add(dgvDescription);
+                    dgvViewer.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+                    dgvViewer.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                    for (int i = 0; i < task.SelectTableWhere("User", cbTasksOnUser.SelectedItem.ToString()).Rows.Count; i++)
+                        dgvViewer.Rows.Add(task.SelectTableWhere("User", cbTasksOnUser.SelectedItem.ToString()).Rows[i].ItemArray);
                 }
-                else
+                catch (SQLiteException ex)
                 {
-                    MessageBox.Show("Выберите исполнителя!");
+                    MessageBox.Show("Ошибка: " + ex.Message);
                 }
             }
             else
             {
                 MessageBox.Show("Необходимо создать или открыть файл базы данных!");
-            }*/
+            }
         }
 
         
-        //Заполнение списка проектов в ComboBox
+        //Заполнение списка проектов в ComboBoxы
         private void fillCbTasksInProject()
         {
             DataBase dataBase = new DataBase();
             cbTasksInProject.Items.Clear();
             cbProjectName.Items.Clear();
+            cbProjectNameForTask.Items.Clear();
             for (int i = 0; i < project.SelectColumn().Rows.Count; i++)
             {
                 cbTasksInProject.Items.AddRange(project.SelectColumn().Rows[i].ItemArray);
                 cbProjectName.Items.AddRange(project.SelectColumn().Rows[i].ItemArray);
+                cbProjectNameForTask.Items.AddRange(project.SelectColumn().Rows[i].ItemArray);
             }
         }
         private void cbTasksInProject_Enter(object sender, EventArgs e)
@@ -283,16 +374,26 @@ namespace BugTrackingSystemWithSQlite
             }
         }
 
-        //Заполнение списка пользователей в ComboBox
+        private void cbProjectNameForTask_Enter(object sender, EventArgs e)
+        {
+            if (File.Exists(dbFileName = DataBase.dbFileName))
+            {
+                fillCbTasksInProject();
+            }
+        }
+
+        //Заполнение списка пользователей в ComboBoxы
         private void fillCbTasksOnUser()
         {
             DataBase dataBase = new DataBase();
             cbTasksOnUser.Items.Clear();
             cbUserName.Items.Clear();
+            cbUserNameForTask.Items.Clear();
             for (int i = 0; i < user.SelectColumn().Rows.Count; i++)
             {
                 cbTasksOnUser.Items.AddRange(user.SelectColumn().Rows[i].ItemArray);
                 cbUserName.Items.AddRange(user.SelectColumn().Rows[i].ItemArray);
+                cbUserNameForTask.Items.AddRange(user.SelectColumn().Rows[i].ItemArray);
             }
         }
         private void cbTasksOnUser_Enter(object sender, EventArgs e)
@@ -304,6 +405,14 @@ namespace BugTrackingSystemWithSQlite
         }
 
         private void cbUserName_Enter(object sender, EventArgs e)
+        {
+            if (File.Exists(dbFileName = DataBase.dbFileName))
+            {
+                fillCbTasksOnUser();
+            }
+        }
+
+        private void cbUserNameForTask_Enter(object sender, EventArgs e)
         {
             if (File.Exists(dbFileName = DataBase.dbFileName))
             {

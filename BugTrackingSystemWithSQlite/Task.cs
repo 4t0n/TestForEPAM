@@ -13,6 +13,12 @@ namespace BugTrackingSystemWithSQlite
 
         }
 
+        public override void AddItem(string ItemName)
+        {
+            DataBase dataBase = new DataBase();
+            dataBase.AddItem(TableName, ItemName, ColumnName, ColumnName1, ColumnName2, ColumnName3, ColumnName4, ColumnName5, ColumnName6);            
+        }
+
         public override void AddColumn()
         {
             DataBase dataBase = new DataBase();
