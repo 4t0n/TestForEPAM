@@ -102,58 +102,44 @@ namespace BugTrackingSystemWithSQlite
             }
         }
 
-        //Добавить значение в колонку
+        //Добавить строку
         public static void AddItem(string tableName, string itemName, params string[] columnName)
-        {
-            if (File.Exists(dbFileName))
+        {            
+            string JoinColumnName = string.Join("', '", columnName);
+            dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
+            dbConnect.Open();
+            dbCommand.Connection = dbConnect;
+            string sqlQuery = "INSERT INTO " + tableName + " ('" + JoinColumnName + "') VALUES ('" +
+                    itemName + "')";                
+            try
             {
-                string JoinColumnName = string.Join("', '", columnName);
-                dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
-                dbConnect.Open();
-                dbCommand.Connection = dbConnect;
-                string sqlQuery = "INSERT INTO " + tableName + " ('" + JoinColumnName + "') VALUES ('" +
-                        itemName + "')";                
-                try
-                {
-                    dbCommand.CommandText = sqlQuery;
-                    dbCommand.ExecuteNonQuery();
-                }
-                catch (SQLiteException ex)
-                {
-                    MessageBox.Show("Ошибка: " + ex.Message);
-                }
-                dbConnect.Close();
+                dbCommand.CommandText = sqlQuery;
+                dbCommand.ExecuteNonQuery();
             }
-            else
+            catch (SQLiteException ex)
             {
-                MessageBox.Show("Необходимо создать или открыть файл базы данных!");
+                MessageBox.Show("Ошибка: " + ex.Message);
             }
+            dbConnect.Close();            
         }
 
-        //Удалить строку из колонки
+        //Удалить строку
         public static void DelItem(string tableName, string itemName, string columnName)
-        {
-            if (File.Exists(dbFileName))
+        {            
+            dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
+            dbConnect.Open();
+            dbCommand.Connection = dbConnect;
+            string sqlQuery = "DELETE FROM " + tableName + " WHERE " + columnName + " = '" + itemName + "'";
+            try
             {
-                dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
-                dbConnect.Open();
-                dbCommand.Connection = dbConnect;
-                string sqlQuery = "DELETE FROM " + tableName + " WHERE " + columnName + " = '" + itemName + "'";
-                try
-                {
-                    dbCommand.CommandText = sqlQuery;
-                    dbCommand.ExecuteNonQuery();
-                }
-                catch (SQLiteException ex)
-                {
-                    MessageBox.Show("Ошибка: " + ex.Message);
-                }
-                dbConnect.Close();
+                dbCommand.CommandText = sqlQuery;
+                dbCommand.ExecuteNonQuery();
             }
-            else
+            catch (SQLiteException ex)
             {
-                MessageBox.Show("Необходимо создать или открыть файл базы данных!");
+                MessageBox.Show("Ошибка: " + ex.Message);
             }
+            dbConnect.Close();            
         }
 
         //Выделить колонку и добавить в dTable
