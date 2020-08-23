@@ -14,14 +14,14 @@ using System.Data.SqlClient;
 
 namespace BugTrackingSystemWithSQlite
 {
-    class DataBase
+    public static class DataBase
     {
         public static string dbFileName;
         public static SQLiteConnection dbConnect = new SQLiteConnection();
         public static SQLiteCommand dbCommand = new SQLiteCommand();
 
         //Создать файл
-        public void CreateFile()
+        public static void CreateFile()
         {
             Stream myStream;
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
@@ -50,7 +50,7 @@ namespace BugTrackingSystemWithSQlite
         }
 
         //Открыть файл
-        public void OpenFile()
+        public static void OpenFile()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -63,7 +63,7 @@ namespace BugTrackingSystemWithSQlite
         }
 
         //Создать таблицу
-        public void CreateTable(string tableName)
+        public static void CreateTable(string tableName)
         {
             string sqlQuery = "CREATE TABLE IF NOT EXISTS " + tableName + " (idProject INTEGER PRIMARY KEY AUTOINCREMENT)";
             dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
@@ -73,8 +73,22 @@ namespace BugTrackingSystemWithSQlite
             dbCommand.ExecuteNonQuery();
         }
 
+        //Создать триггеры
+        public static void CreateTrigger(string tableName, string addText, string delText)
+        {
+            dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
+            dbConnect.Open();
+            dbCommand.Connection = dbConnect;
+            dbCommand.CommandText = "CREATE TABLE IF NOT EXISTS TriggerList (idTrigger INTEGER PRIMARY KEY AUTOINCREMENT, Trigger TEXT)";
+            dbCommand.ExecuteNonQuery();
+            dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS AddTrigger"+tableName+" AFTER INSERT ON "+tableName+" BEGIN INSERT INTO TriggerList('Trigger') VALUES ('"+addText+"'); END";
+            dbCommand.ExecuteNonQuery();
+            dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS DelTrigger"+tableName+" AFTER DELETE ON "+tableName+" BEGIN INSERT INTO TriggerList('Trigger') VALUES ('"+delText+"'); END";
+            dbCommand.ExecuteNonQuery();
+        }
+
         //Создать колонки
-        public void AddColumn(string tableName, params string[] columnName)
+        public static void AddColumn(string tableName, params string[] columnName)
         {
             string sqlQuery;
             for (int i = 0; i < columnName.Length; i++)
@@ -89,7 +103,7 @@ namespace BugTrackingSystemWithSQlite
         }
 
         //Добавить значение в колонку
-        public void AddItem(string tableName, string itemName, params string[] columnName)
+        public static void AddItem(string tableName, string itemName, params string[] columnName)
         {
             if (File.Exists(dbFileName))
             {
@@ -117,7 +131,7 @@ namespace BugTrackingSystemWithSQlite
         }
 
         //Удалить строку из колонки
-        public void DelItem(string tableName, string itemName, string columnName)
+        public static void DelItem(string tableName, string itemName, string columnName)
         {
             if (File.Exists(dbFileName))
             {
@@ -143,7 +157,7 @@ namespace BugTrackingSystemWithSQlite
         }
 
         //Выделить колонку и добавить в dTable
-        public DataTable SelectColumn(string tableName, string columnName)
+        public static DataTable SelectColumn(string tableName, string columnName)
         {
             string sqlQuery;
             DataTable dTable = new DataTable();
@@ -155,7 +169,7 @@ namespace BugTrackingSystemWithSQlite
         }
 
         //Выделить таблицу и добавить в dTable
-        public DataTable SelectTable(string tableName)
+        public static DataTable SelectTable(string tableName)
         {
             string sqlQuery;
             DataTable dTable = new DataTable();
@@ -167,7 +181,7 @@ namespace BugTrackingSystemWithSQlite
         }
 
         //Выделить строки, где колонка columnName имеет значение cellValue и добавить в dTable
-        public DataTable SelectTableWhere(string tableName, string columnName, string cellValue)
+        public static DataTable SelectTableWhere(string tableName, string columnName, string cellValue)
         {
             string sqlQuery;
             DataTable dTable = new DataTable();

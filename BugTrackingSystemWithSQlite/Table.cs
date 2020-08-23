@@ -62,51 +62,50 @@ namespace BugTrackingSystemWithSQlite
 
         //Создать таблицу
         public void CreateTable ()
-        {
-            DataBase dataBase = new DataBase();
-            dataBase.CreateTable(TableName);
+        {            
+            DataBase.CreateTable(TableName);
         }
 
         //Добавить столбец
-        public virtual void AddColumn(params string[] ColumnName)
-        {
-            DataBase dataBase = new DataBase();
-            dataBase.AddColumn(TableName, ColumnName);
+        public void AddColumn(params string[] ColumnName)
+        {            
+            DataBase.AddColumn(TableName, ColumnName);
         }
 
         //Добавить значение в ячейку столбца ColumnName
-        public virtual void AddItem(string ItemName, params string[] ColumnName)
-        {
-            DataBase dataBase = new DataBase();
-            dataBase.AddItem(TableName, ItemName, ColumnName);
+        public void AddItem(string ItemName, params string[] ColumnName)
+        {            
+            DataBase.AddItem(TableName, ItemName, ColumnName);
         }
 
         //Удалить строку, где значение столбца ColumnName равно ItemName
-        public virtual void DelItem(string ItemName, string ColumnName)
-        {
-            DataBase dataBase = new DataBase();
-            dataBase.DelItem(TableName, ItemName, ColumnName);
+        public void DelItem(string ItemName, string ColumnName)
+        {            
+            DataBase.DelItem(TableName, ItemName, ColumnName);
         }
 
         //Извлечь все данные из таблицы TableName
-        public DataTable SelectTable()
-        {
-            DataBase dataBase = new DataBase();
-            return dataBase.SelectTable(TableName);
-        }
+        //public DataTable SelectTable()
+        //{            
+        //    return DataBase.SelectTable(TableName);
+        //}
 
         //Извлечь все данные из таблицы TableName, где столбец ColumnName имеет значение cellValue
         public DataTable SelectTableWhere(string columnValue, string cellValue)
-        {
-            DataBase dataBase = new DataBase();
-            return dataBase.SelectTableWhere(TableName,columnValue,cellValue);
+        {            
+            return DataBase.SelectTableWhere(TableName,columnValue,cellValue);
         }
 
         //Извлечь все данные из столбца ColumnName
-        public DataTable SelectColumn()
+        public DataTable SelectColumn(string columnName)
+        {            
+            return DataBase.SelectColumn(TableName, columnName);
+        }
+
+        //Создать триггеры
+        public void CreateTrigger (string addText, string delText)
         {
-            DataBase dataBase = new DataBase();
-            return dataBase.SelectColumn(TableName, ColumnName);
+            DataBase.CreateTrigger(TableName, addText, delText);
         }
     }
 }
