@@ -18,9 +18,12 @@ namespace BugTrackingSystemWithSQlite
         public string dbFileName = DataBase.dbFileName;
         public SQLiteConnection dbConnect;
         public SQLiteCommand dbCommand;
-        Project project;
-        User user;
-        Task task;
+        //Project project;
+        //User user;
+        //Task task;        
+        Table project;
+        Table user;
+        Table task;
         public Form1()
         {
             InitializeComponent();
@@ -30,10 +33,10 @@ namespace BugTrackingSystemWithSQlite
         private void Form1_Load(object sender, EventArgs e)
         {
             dbConnect = new SQLiteConnection();
-            dbCommand = new SQLiteCommand();
-            project = new Project();
-            user = new User();
-            task = new Task();            
+            dbCommand = new SQLiteCommand();            
+            project = new Table("ProjectList", "Project");
+            user = new Table("UserList", "User");
+            task = new Table("TaskList", "Task", "Project", "Theme", "Type", "Priority", "User", "Description");
         }
 
         //Создание файла
@@ -42,14 +45,14 @@ namespace BugTrackingSystemWithSQlite
             DataBase dataBase = new DataBase();
             dataBase.CreateFile();
             project.CreateTable();
-            project.AddColumn();
+            project.AddColumn(project.ColumnName);
             user.CreateTable();
-            user.AddColumn();
+            user.AddColumn(user.ColumnName);
             task.CreateTable();
-            task.AddColumn();
+            task.AddColumn(task.ColumnName, task.ColumnName1, task.ColumnName2, task.ColumnName3, task.ColumnName4, task.ColumnName5, task.ColumnName6);
         }
-        
-        
+
+
 
         //Открытие файла
         private void toolSpFileOpen_Click(object sender, EventArgs e)
@@ -65,7 +68,7 @@ namespace BugTrackingSystemWithSQlite
             {
                 if (tbProjectName.Text != "")
                 {
-                    project.AddItem(tbProjectName.Text);
+                    project.AddItem(tbProjectName.Text,project.ColumnName);
                     tbProjectName.Clear();
                 }
                 else
@@ -86,8 +89,8 @@ namespace BugTrackingSystemWithSQlite
             {
                 if (cbProjectName.SelectedIndex >= 0)
                 {                    
-                    project.DelItem(cbProjectName.SelectedItem.ToString());
-                    task.DelTask(project.ColumnName, cbProjectName.SelectedItem.ToString());
+                    project.DelItem(cbProjectName.SelectedItem.ToString(), project.ColumnName);
+                    task.DelItem(cbProjectName.SelectedItem.ToString(), task.ColumnName5);
                     cbProjectName.SelectedIndex = -1;
                 }
                 else
@@ -108,7 +111,7 @@ namespace BugTrackingSystemWithSQlite
             {
                 if (tbUserName.Text != "")
                 {
-                    user.AddItem(tbUserName.Text);
+                    user.AddItem(tbUserName.Text, user.ColumnName);
                     tbUserName.Clear();
                 }
                 else
@@ -129,8 +132,8 @@ namespace BugTrackingSystemWithSQlite
             {
                 if (cbUserName.SelectedIndex >= 0)
                 {
-                    user.DelItem(cbUserName.SelectedItem.ToString());
-                    task.DelTask(user.ColumnName, cbUserName.SelectedItem.ToString());
+                    user.DelItem(cbUserName.SelectedItem.ToString(), user.ColumnName);
+                    task.DelItem(cbUserName.SelectedItem.ToString(), task.ColumnName1);
                     cbUserName.SelectedIndex = -1;
                 }
                 else
@@ -153,7 +156,7 @@ namespace BugTrackingSystemWithSQlite
                 {
                     string [] array = { tbTaskName.Text, cbProjectNameForTask.SelectedItem.ToString(), tbThemeName.Text, tbTypeName.Text, tbPriorityName.Text, cbUserNameForTask.SelectedItem.ToString(), tbDescriptionName.Text};
                     string AllRow = string.Join("', '", array);
-                    task.AddItem(AllRow);
+                    task.AddItem(AllRow, task.ColumnName, task.ColumnName1, task.ColumnName2, task.ColumnName3, task.ColumnName4, task.ColumnName5, task.ColumnName6);
                 }
                 else
                 {
@@ -173,7 +176,7 @@ namespace BugTrackingSystemWithSQlite
             {
                 if (cbTaskName.SelectedIndex >= 0)
                 {
-                    task.DelItem(cbTaskName.SelectedItem.ToString());                    
+                    task.DelItem(cbTaskName.SelectedItem.ToString(),task.ColumnName);                    
                     cbTaskName.SelectedIndex = -1;
                 }
                 else

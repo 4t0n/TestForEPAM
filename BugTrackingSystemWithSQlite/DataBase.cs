@@ -117,7 +117,7 @@ namespace BugTrackingSystemWithSQlite
         }
 
         //Удалить строку из колонки
-        public void DelItem(string tableName, string columnName, string itemName)
+        public void DelItem(string tableName, string itemName, string columnName)
         {
             if (File.Exists(dbFileName))
             {

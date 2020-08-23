@@ -13,23 +13,23 @@ namespace BugTrackingSystemWithSQlite
 
         }
 
-        public override void AddItem(string ItemName)
-        {
-            DataBase dataBase = new DataBase();
-            dataBase.AddItem(TableName, ItemName, ColumnName, ColumnName1, ColumnName2, ColumnName3, ColumnName4, ColumnName5, ColumnName6);            
-        }
+        //public override void AddItem(string ItemName)
+        //{
+        //    DataBase dataBase = new DataBase();
+        //    dataBase.AddItem(TableName, ItemName, ColumnName, ColumnName1, ColumnName2, ColumnName3, ColumnName4, ColumnName5, ColumnName6);            
+        //}
 
-        public override void AddColumn()
-        {
-            DataBase dataBase = new DataBase();
-            dataBase.AddColumn(TableName, ColumnName, ColumnName1, ColumnName2, ColumnName3, ColumnName4, ColumnName5, ColumnName6);
-        }
+        //public override void AddColumn()
+        //{
+        //    DataBase dataBase = new DataBase();
+        //    dataBase.AddColumn(TableName, ColumnName, ColumnName1, ColumnName2, ColumnName3, ColumnName4, ColumnName5, ColumnName6);
+        //}
 
-        public void DelTask (string columnName, string itemName)
-        {
-            DataBase dataBase = new DataBase();
-            dataBase.DelItem(TableName, columnName, itemName);
-        }
+        //public void DelTask (string columnName, string itemName)
+        //{
+        //    DataBase dataBase = new DataBase();
+        //    dataBase.DelItem(TableName, columnName, itemName);
+        //}
         /*
         //Показать список проектов
         public void ShowTasks(DataGridView dgvViewer)

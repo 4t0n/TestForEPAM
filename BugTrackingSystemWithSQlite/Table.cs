@@ -68,24 +68,24 @@ namespace BugTrackingSystemWithSQlite
         }
 
         //Добавить столбец
-        public virtual void AddColumn()
+        public virtual void AddColumn(params string[] ColumnName)
         {
             DataBase dataBase = new DataBase();
             dataBase.AddColumn(TableName, ColumnName);
         }
 
         //Добавить значение в ячейку столбца ColumnName
-        public virtual void AddItem(string ItemName)
+        public virtual void AddItem(string ItemName, params string[] ColumnName)
         {
             DataBase dataBase = new DataBase();
             dataBase.AddItem(TableName, ItemName, ColumnName);
         }
 
         //Удалить строку, где значение столбца ColumnName равно ItemName
-        public virtual void DelItem(string ItemName)
+        public virtual void DelItem(string ItemName, string ColumnName)
         {
             DataBase dataBase = new DataBase();
-            dataBase.DelItem(TableName, ColumnName, ItemName);
+            dataBase.DelItem(TableName, ItemName, ColumnName);
         }
 
         //Извлечь все данные из таблицы TableName
