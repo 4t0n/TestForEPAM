@@ -168,7 +168,7 @@
             this.cbProjectName.Name = "cbProjectName";
             this.cbProjectName.Size = new System.Drawing.Size(188, 21);
             this.cbProjectName.TabIndex = 10;
-            this.cbProjectName.Enter += new System.EventHandler(this.cbProjectName_Enter);
+            this.cbProjectName.DropDown += new System.EventHandler(this.cbProjectName_DropDown);
             // 
             // bnDeleteProject
             // 
@@ -215,7 +215,7 @@
             this.cbUserName.Name = "cbUserName";
             this.cbUserName.Size = new System.Drawing.Size(188, 21);
             this.cbUserName.TabIndex = 11;
-            this.cbUserName.Enter += new System.EventHandler(this.cbUserName_Enter);
+            this.cbUserName.DropDown += new System.EventHandler(this.cbUserName_DropDown);
             // 
             // bnDeleteUser
             // 
@@ -298,17 +298,20 @@
             // cbTaskName
             // 
             this.cbTaskName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbTaskName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cbTaskName.FormattingEnabled = true;
             this.cbTaskName.Location = new System.Drawing.Point(190, 298);
             this.cbTaskName.Name = "cbTaskName";
-            this.cbTaskName.Size = new System.Drawing.Size(153, 23);
+            this.cbTaskName.Size = new System.Drawing.Size(153, 21);
             this.cbTaskName.TabIndex = 25;
+            this.cbTaskName.DropDown += new System.EventHandler(this.cbTaskName_DropDown);
             // 
             // tbDescriptionName
             // 
+            this.tbDescriptionName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbDescriptionName.Location = new System.Drawing.Point(4, 298);
             this.tbDescriptionName.Name = "tbDescriptionName";
-            this.tbDescriptionName.Size = new System.Drawing.Size(160, 21);
+            this.tbDescriptionName.Size = new System.Drawing.Size(160, 20);
             this.tbDescriptionName.TabIndex = 24;
             // 
             // lbDescriptionName
@@ -324,12 +327,13 @@
             // cbUserNameForTask
             // 
             this.cbUserNameForTask.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbUserNameForTask.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cbUserNameForTask.FormattingEnabled = true;
             this.cbUserNameForTask.Location = new System.Drawing.Point(4, 254);
             this.cbUserNameForTask.Name = "cbUserNameForTask";
-            this.cbUserNameForTask.Size = new System.Drawing.Size(160, 23);
+            this.cbUserNameForTask.Size = new System.Drawing.Size(160, 21);
             this.cbUserNameForTask.TabIndex = 22;
-            this.cbUserNameForTask.Enter += new System.EventHandler(this.cbUserNameForTask_Enter);
+            this.cbUserNameForTask.DropDown += new System.EventHandler(this.cbUserNameForTask_DropDown);
             // 
             // lbUserNameForTask
             // 
@@ -343,9 +347,10 @@
             // 
             // tbPriorityName
             // 
+            this.tbPriorityName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbPriorityName.Location = new System.Drawing.Point(4, 212);
             this.tbPriorityName.Name = "tbPriorityName";
-            this.tbPriorityName.Size = new System.Drawing.Size(160, 21);
+            this.tbPriorityName.Size = new System.Drawing.Size(160, 20);
             this.tbPriorityName.TabIndex = 20;
             // 
             // lbPriorityName
@@ -360,9 +365,10 @@
             // 
             // tbTypeName
             // 
+            this.tbTypeName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbTypeName.Location = new System.Drawing.Point(4, 170);
             this.tbTypeName.Name = "tbTypeName";
-            this.tbTypeName.Size = new System.Drawing.Size(160, 21);
+            this.tbTypeName.Size = new System.Drawing.Size(160, 20);
             this.tbTypeName.TabIndex = 18;
             // 
             // lbTypeName
@@ -377,9 +383,10 @@
             // 
             // tbThemeName
             // 
+            this.tbThemeName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbThemeName.Location = new System.Drawing.Point(4, 127);
             this.tbThemeName.Name = "tbThemeName";
-            this.tbThemeName.Size = new System.Drawing.Size(160, 21);
+            this.tbThemeName.Size = new System.Drawing.Size(160, 20);
             this.tbThemeName.TabIndex = 16;
             // 
             // lbThemeName
@@ -395,12 +402,13 @@
             // cbProjectNameForTask
             // 
             this.cbProjectNameForTask.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbProjectNameForTask.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cbProjectNameForTask.FormattingEnabled = true;
             this.cbProjectNameForTask.Location = new System.Drawing.Point(4, 83);
             this.cbProjectNameForTask.Name = "cbProjectNameForTask";
-            this.cbProjectNameForTask.Size = new System.Drawing.Size(160, 23);
+            this.cbProjectNameForTask.Size = new System.Drawing.Size(160, 21);
             this.cbProjectNameForTask.TabIndex = 14;
-            this.cbProjectNameForTask.Enter += new System.EventHandler(this.cbProjectNameForTask_Enter);
+            this.cbProjectNameForTask.DropDown += new System.EventHandler(this.cbProjectNameForTask_DropDown);
             // 
             // lbProjectNameForTask
             // 
@@ -414,9 +422,10 @@
             // 
             // tbTaskName
             // 
+            this.tbTaskName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbTaskName.Location = new System.Drawing.Point(4, 40);
             this.tbTaskName.Name = "tbTaskName";
-            this.tbTaskName.Size = new System.Drawing.Size(160, 21);
+            this.tbTaskName.Size = new System.Drawing.Size(160, 20);
             this.tbTaskName.TabIndex = 12;
             // 
             // lbTaskName
@@ -492,7 +501,7 @@
             this.cbTasksInProject.Name = "cbTasksInProject";
             this.cbTasksInProject.Size = new System.Drawing.Size(154, 21);
             this.cbTasksInProject.TabIndex = 18;
-            this.cbTasksInProject.Enter += new System.EventHandler(this.cbTasksInProject_Enter);
+            this.cbTasksInProject.DropDown += new System.EventHandler(this.cbTasksInProject_DropDown);
             // 
             // cbTasksOnUser
             // 
@@ -502,7 +511,7 @@
             this.cbTasksOnUser.Name = "cbTasksOnUser";
             this.cbTasksOnUser.Size = new System.Drawing.Size(154, 21);
             this.cbTasksOnUser.TabIndex = 19;
-            this.cbTasksOnUser.Enter += new System.EventHandler(this.cbTasksOnUser_Enter);
+            this.cbTasksOnUser.DropDown += new System.EventHandler(this.cbTasksOnUser_DropDown);
             // 
             // lbProjectInTask
             // 

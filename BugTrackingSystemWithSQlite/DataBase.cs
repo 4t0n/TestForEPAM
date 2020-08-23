@@ -142,7 +142,7 @@ namespace BugTrackingSystemWithSQlite
             }
         }
 
-        //Выделить колонку
+        //Выделить колонку и добавить в dTable
         public DataTable SelectColumn(string tableName, string columnName)
         {
             string sqlQuery;
@@ -154,7 +154,7 @@ namespace BugTrackingSystemWithSQlite
             return dTable;
         }
 
-        //Выделить таблицу
+        //Выделить таблицу и добавить в dTable
         public DataTable SelectTable(string tableName)
         {
             string sqlQuery;
@@ -166,12 +166,12 @@ namespace BugTrackingSystemWithSQlite
             return dTable;
         }
 
-        //Выделить строки, где колонка columnName имеет значение cellValue
+        //Выделить строки, где колонка columnName имеет значение cellValue и добавить в dTable
         public DataTable SelectTableWhere(string tableName, string columnName, string cellValue)
         {
             string sqlQuery;
             DataTable dTable = new DataTable();
-            sqlQuery = "SELECT * FROM " + tableName + " WHERE "+columnName+" = "+cellValue+"" ;
+            sqlQuery = "SELECT * FROM " + tableName + " WHERE "+columnName+" = '"+cellValue+"'" ;
             dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
             SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, dbConnect);
             adapter.Fill(dTable);

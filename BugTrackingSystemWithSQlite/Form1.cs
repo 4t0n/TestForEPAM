@@ -33,7 +33,7 @@ namespace BugTrackingSystemWithSQlite
             dbCommand = new SQLiteCommand();
             project = new Project();
             user = new User();
-            task = new Task();
+            task = new Task();            
         }
 
         //Создание файла
@@ -86,7 +86,9 @@ namespace BugTrackingSystemWithSQlite
             {
                 if (cbProjectName.SelectedIndex >= 0)
                 {                    
-                    project.DelItem(cbProjectName.SelectedItem.ToString());                    
+                    project.DelItem(cbProjectName.SelectedItem.ToString());
+                    task.DelTask(project.ColumnName, cbProjectName.SelectedItem.ToString());
+                    cbProjectName.SelectedIndex = -1;
                 }
                 else
                 {
@@ -128,6 +130,8 @@ namespace BugTrackingSystemWithSQlite
                 if (cbUserName.SelectedIndex >= 0)
                 {
                     user.DelItem(cbUserName.SelectedItem.ToString());
+                    task.DelTask(user.ColumnName, cbUserName.SelectedItem.ToString());
+                    cbUserName.SelectedIndex = -1;
                 }
                 else
                 {
@@ -153,7 +157,7 @@ namespace BugTrackingSystemWithSQlite
                 }
                 else
                 {
-                    MessageBox.Show("Введите имя пользователя!");
+                    MessageBox.Show("Введите информацию о задаче!");
                 }
             }
             else
@@ -165,8 +169,22 @@ namespace BugTrackingSystemWithSQlite
         //Кнопка удаления задачи
         private void bnDeleteTask_Click(object sender, EventArgs e)
         {
-            //Task task = new Task(dbFileName, dbConnect, dbCommand);
-            //task.DeleteNameTask();
+            if (File.Exists(dbFileName = DataBase.dbFileName))
+            {
+                if (cbTaskName.SelectedIndex >= 0)
+                {
+                    task.DelItem(cbTaskName.SelectedItem.ToString());                    
+                    cbTaskName.SelectedIndex = -1;
+                }
+                else
+                {
+                    MessageBox.Show("Введите название задачи!");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Необходимо создать или открыть файл базы данных!");
+            }
         }
 
         //Показать список проектов
@@ -346,8 +364,7 @@ namespace BugTrackingSystemWithSQlite
         
         //Заполнение списка проектов в ComboBoxы
         private void fillCbTasksInProject()
-        {
-            DataBase dataBase = new DataBase();
+        {            
             cbTasksInProject.Items.Clear();
             cbProjectName.Items.Clear();
             cbProjectNameForTask.Items.Clear();
@@ -358,7 +375,8 @@ namespace BugTrackingSystemWithSQlite
                 cbProjectNameForTask.Items.AddRange(project.SelectColumn().Rows[i].ItemArray);
             }
         }
-        private void cbTasksInProject_Enter(object sender, EventArgs e)
+
+        private void cbProjectName_DropDown(object sender, EventArgs e)
         {
             if (File.Exists(dbFileName = DataBase.dbFileName))
             {
@@ -366,7 +384,7 @@ namespace BugTrackingSystemWithSQlite
             }
         }
 
-        private void cbProjectName_Enter(object sender, EventArgs e)
+        private void cbProjectNameForTask_DropDown(object sender, EventArgs e)
         {
             if (File.Exists(dbFileName = DataBase.dbFileName))
             {
@@ -374,7 +392,7 @@ namespace BugTrackingSystemWithSQlite
             }
         }
 
-        private void cbProjectNameForTask_Enter(object sender, EventArgs e)
+        private void cbTasksInProject_DropDown(object sender, EventArgs e)
         {
             if (File.Exists(dbFileName = DataBase.dbFileName))
             {
@@ -384,8 +402,7 @@ namespace BugTrackingSystemWithSQlite
 
         //Заполнение списка пользователей в ComboBoxы
         private void fillCbTasksOnUser()
-        {
-            DataBase dataBase = new DataBase();
+        {            
             cbTasksOnUser.Items.Clear();
             cbUserName.Items.Clear();
             cbUserNameForTask.Items.Clear();
@@ -396,15 +413,7 @@ namespace BugTrackingSystemWithSQlite
                 cbUserNameForTask.Items.AddRange(user.SelectColumn().Rows[i].ItemArray);
             }
         }
-        private void cbTasksOnUser_Enter(object sender, EventArgs e)
-        {
-            if (File.Exists(dbFileName = DataBase.dbFileName))
-            {
-                fillCbTasksOnUser();
-            }            
-        }
-
-        private void cbUserName_Enter(object sender, EventArgs e)
+        private void cbUserName_DropDown(object sender, EventArgs e)
         {
             if (File.Exists(dbFileName = DataBase.dbFileName))
             {
@@ -412,11 +421,37 @@ namespace BugTrackingSystemWithSQlite
             }
         }
 
-        private void cbUserNameForTask_Enter(object sender, EventArgs e)
+        private void cbUserNameForTask_DropDown(object sender, EventArgs e)
         {
             if (File.Exists(dbFileName = DataBase.dbFileName))
             {
                 fillCbTasksOnUser();
+            }
+        }
+
+        private void cbTasksOnUser_DropDown(object sender, EventArgs e)
+        {
+            if (File.Exists(dbFileName = DataBase.dbFileName))
+            {
+                fillCbTasksOnUser();
+            }
+        }
+
+        //Заполнение списка задач в ComboBox
+        private void fillCbTasks()
+        {            
+            cbTaskName.Items.Clear();            
+            for (int i = 0; i < task.SelectColumn().Rows.Count; i++)
+            {
+                cbTaskName.Items.AddRange(task.SelectColumn().Rows[i].ItemArray);                
+            }
+        }
+
+        private void cbTaskName_DropDown(object sender, EventArgs e)
+        {
+            if (File.Exists(dbFileName = DataBase.dbFileName))
+            {
+                fillCbTasks();
             }
         }
 
