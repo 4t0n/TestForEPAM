@@ -152,7 +152,7 @@ namespace BugTrackingSystemWithSQlite
             sqlQuery = "SELECT " + columnName + " FROM " + tableName + "";
             dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
             SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, dbConnect);
-            adapter.Fill(dTable);
+            adapter.Fill(dTable);            
             return dTable;
         }
 
@@ -168,6 +168,24 @@ namespace BugTrackingSystemWithSQlite
             return dTable;
         }
 
+        //Выделить столбец columnName и добавить в список
+        public static List<string> SelectTableInList(string tableName, string columnName)
+        {
+            List<string> list = new List<string>();
+            SQLiteConnection dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
+            dbConnect.Open();
+            string sqlQuery;
+            sqlQuery = "SELECT "+columnName+" FROM " + tableName + "";                        
+            SQLiteCommand dbCommand = new SQLiteCommand(sqlQuery, dbConnect);
+            SQLiteDataReader reader = dbCommand.ExecuteReader();
+            while (reader.Read())
+            {
+                list.Add(reader.GetString(0));
+            }
+            reader.Close();
+            return list;
+        }
+
         //Выделить строки, где колонка columnName имеет значение cellValue и добавить в dTable
         public static DataTable SelectTableWhere(string tableName, string columnName, string cellValue)
         {
@@ -176,8 +194,8 @@ namespace BugTrackingSystemWithSQlite
             sqlQuery = "SELECT * FROM " + tableName + " WHERE "+columnName+" = '"+cellValue+"'" ;
             dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
             SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, dbConnect);
-            adapter.Fill(dTable);
-            return dTable;
+            adapter.Fill(dTable);            
+            return dTable;            
         }
     }
 }

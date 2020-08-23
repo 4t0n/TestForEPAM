@@ -59,9 +59,21 @@ namespace BugTrackingSystemWithSQlite
                 if (tbProjectName.Text != "")
                 {
                     ///////
-                    project.AddItem(tbProjectName.Text,project.ColumnName);
+                    List<string> list = project.SelectTableInList(project.ColumnName);
                     ///////
-                    tbProjectName.Clear();
+                    if (list.Contains(tbProjectName.Text))
+                    {
+                        MessageBox.Show("Проект с таким названием уже существует. Выберите другое название.");
+                        tbProjectName.Clear();
+                    }
+                    else
+                    {
+                        ///////
+                        project.AddItem(tbProjectName.Text, project.ColumnName);
+                        ///////
+                        tbProjectName.Clear();
+                        MessageBox.Show("Проект добавлен.");
+                    }                    
                 }
                 else
                 {
@@ -88,6 +100,7 @@ namespace BugTrackingSystemWithSQlite
                         project.DelItemFrom2Table(cbProjectName.SelectedItem.ToString(), task.TableName, project.ColumnName, task.ColumnName1);
                         ///////
                         cbProjectName.SelectedIndex = -1;
+                        MessageBox.Show("Проект удалён.");
                     }                    
                 }
                 else
@@ -107,11 +120,23 @@ namespace BugTrackingSystemWithSQlite
             if (File.Exists(DataBase.dbFileName))
             {
                 if (tbUserName.Text != "")
-                {
+                {  
                     ///////
-                    user.AddItem(tbUserName.Text, user.ColumnName);
+                    List<string> list = user.SelectTableInList(user.ColumnName);
                     ///////
-                    tbUserName.Clear();
+                    if (list.Contains(tbUserName.Text))
+                    {
+                        MessageBox.Show("Пользователь с таким именем уже существует. Выберите другое имя.");
+                        tbUserName.Clear();
+                    }
+                    else
+                    {
+                        ///////
+                        user.AddItem(tbUserName.Text, user.ColumnName);
+                        ///////
+                        tbUserName.Clear();
+                        MessageBox.Show("Пользователь добавлен.");
+                    }                    
                 }
                 else
                 {
@@ -138,6 +163,7 @@ namespace BugTrackingSystemWithSQlite
                         user.DelItemFrom2Table(cbUserName.SelectedItem.ToString(), task.TableName, user.ColumnName, task.ColumnName5);
                         ///////
                         cbUserName.SelectedIndex = -1;
+                        MessageBox.Show("Пользователь удалён.");
                     }                    
                 }
                 else
@@ -160,14 +186,33 @@ namespace BugTrackingSystemWithSQlite
                     && tbThemeName.Text != "" && tbTypeName.Text != "" && cbProjectNameForTask.Text != "" 
                     && cbUserNameForTask.Text != "")
                 {
-                    string [] array = { tbTaskName.Text, cbProjectNameForTask.SelectedItem.ToString(), 
-                        tbThemeName.Text, tbTypeName.Text, tbPriorityName.Text, 
+                    ///////
+                    List<string> list = task.SelectTableInList(task.ColumnName);
+                    ///////
+                    if (list.Contains(tbTaskName.Text))
+                    {
+                        MessageBox.Show("Задача с таким названием уже существует. Выберите другое название.");
+                        tbTaskName.Clear();
+                    }
+                    else
+                    {
+                        string[] array = { tbTaskName.Text, cbProjectNameForTask.SelectedItem.ToString(),
+                        tbThemeName.Text, tbTypeName.Text, tbPriorityName.Text,
                         cbUserNameForTask.SelectedItem.ToString(), tbDescriptionName.Text};
-                    string AllRow = string.Join("', '", array);
-                    ///////
-                    task.AddItem(AllRow, task.ColumnName, task.ColumnName1, task.ColumnName2, task.ColumnName3, 
-                        task.ColumnName4, task.ColumnName5, task.ColumnName6);
-                    ///////
+                        string AllRow = string.Join("', '", array);
+                        ///////
+                        task.AddItem(AllRow, task.ColumnName, task.ColumnName1, task.ColumnName2, task.ColumnName3,
+                            task.ColumnName4, task.ColumnName5, task.ColumnName6);
+                        ///////
+                        tbTaskName.Clear();
+                        cbProjectNameForTask.SelectedIndex = -1;
+                        tbThemeName.Clear();
+                        tbTypeName.Clear();
+                        tbPriorityName.Clear();
+                        cbUserNameForTask.SelectedIndex = -1;
+                        tbDescriptionName.Clear();
+                        MessageBox.Show("Задача добавлена.");
+                    }
                 }
                 else
                 {
@@ -191,6 +236,7 @@ namespace BugTrackingSystemWithSQlite
                     task.DelItem(cbTaskName.SelectedItem.ToString(),task.ColumnName);
                     ///////
                     cbTaskName.SelectedIndex = -1;
+                    MessageBox.Show("Задача удалена.");
                 }
                 else
                 {
@@ -210,7 +256,7 @@ namespace BugTrackingSystemWithSQlite
             {                               
                 DataGridViewTextBoxColumn dgvProject = new DataGridViewTextBoxColumn();
                 try
-                {
+                {                    
                     dgvViewer.Rows.Clear();
                     dgvViewer.Columns.Clear();
                     dgvProject.Name = "Project";

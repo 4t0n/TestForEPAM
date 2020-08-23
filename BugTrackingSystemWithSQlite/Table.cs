@@ -105,7 +105,7 @@ namespace BugTrackingSystemWithSQlite
             return DataBase.SelectTableWhere(TableName,columnValue,cellValue);
         }
 
-        //Извлечь все данные из столбца ColumnName
+        //Извлечь все данные из столбца ColumnName в таблицу
         public DataTable SelectColumn(string columnName)
         {            
             return DataBase.SelectColumn(TableName, columnName);
@@ -115,6 +115,12 @@ namespace BugTrackingSystemWithSQlite
         public void CreateTrigger (string addText, string delText)
         {
             DataBase.CreateTrigger(TableName, addText, delText);
+        }
+
+        //Извлечь все данные из столбца ColumnName в список
+        public List<string> SelectTableInList(string ColumnName)
+        {
+            return DataBase.SelectTableInList(TableName, ColumnName);
         }
     }
 }
