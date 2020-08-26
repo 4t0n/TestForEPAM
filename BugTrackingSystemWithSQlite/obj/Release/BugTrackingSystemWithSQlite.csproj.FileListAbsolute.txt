@@ -36,10 +36,6 @@ C:\MyDev\TestForEPAM\BugTrackingSystemWithSQlite\bin\Release\System.Data.SQLite.
 C:\MyDev\TestForEPAM\BugTrackingSystemWithSQlite\bin\Release\System.Data.SQLite.dll.config
 C:\MyDev\TestForEPAM\BugTrackingSystemWithSQlite\obj\Release\BugTrackingSystemWithSQlite.csprojAssemblyReference.cache
 C:\MyDev\TestForEPAM\BugTrackingSystemWithSQlite\obj\Release\BugTrackingSystemWithSQlite.Form1.resources
-C:\MyDev\TestForEPAM\BugTrackingSystemWithSQlite\obj\Release\BugTrackingSystemWithSQlite.FormAddTask.resources
-C:\MyDev\TestForEPAM\BugTrackingSystemWithSQlite\obj\Release\BugTrackingSystemWithSQlite.FormDeleteProject.resources
-C:\MyDev\TestForEPAM\BugTrackingSystemWithSQlite\obj\Release\BugTrackingSystemWithSQlite.FormDeleteTask.resources
-C:\MyDev\TestForEPAM\BugTrackingSystemWithSQlite\obj\Release\BugTrackingSystemWithSQlite.FormDeleteUser.resources
 C:\MyDev\TestForEPAM\BugTrackingSystemWithSQlite\obj\Release\BugTrackingSystemWithSQlite.Properties.Resources.resources
 C:\MyDev\TestForEPAM\BugTrackingSystemWithSQlite\obj\Release\BugTrackingSystemWithSQlite.csproj.GenerateResource.cache
 C:\MyDev\TestForEPAM\BugTrackingSystemWithSQlite\obj\Release\BugTrackingSystemWithSQlite.csproj.CoreCompileInputs.cache

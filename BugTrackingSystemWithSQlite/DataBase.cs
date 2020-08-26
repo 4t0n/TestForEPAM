@@ -10,16 +10,20 @@ using System.Windows.Forms;
 using System.Data.SQLite;
 using System.IO;
 using System.Diagnostics;
+using System.Data.SqlClient;
 
 namespace BugTrackingSystemWithSQlite
 {
-    class DataBase
+    public static class DataBase
     {
+        //Набор инструментов для работы с БД
+
         public static string dbFileName;
         public static SQLiteConnection dbConnect = new SQLiteConnection();
         public static SQLiteCommand dbCommand = new SQLiteCommand();
 
-        public void CreateFile()
+        //Создать файл
+        public static void CreateFile()
         {
             Stream myStream;
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
@@ -37,17 +41,18 @@ namespace BugTrackingSystemWithSQlite
                     dbFileName = saveFileDialog1.FileName;
                     try
                     {
-                        CreateDataBase();
+                        SQLiteConnection.CreateFile(dbFileName);
                     }
                     catch (SQLiteException ex)
                     {
                         MessageBox.Show("Ошибка: " + ex.Message);
                     }
-                }                
+                }
             }
         }
 
-        public void OpenFile()
+        //Открыть файл
+        public static void OpenFile()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -56,41 +61,13 @@ namespace BugTrackingSystemWithSQlite
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 dbFileName = openFileDialog.FileName;
-                try
-                {
-                    CreateDataBase();
-                }
-                catch (SQLiteException ex)
-                {
-                    MessageBox.Show("Ошибка: " + ex.Message);
-                }
             }
         }
 
-        public void CreateDataBase ()
+        //Создать таблицу
+        public static void CreateTable(string tableName)
         {
-            dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
-            dbConnect.Open();
-            dbCommand.Connection = dbConnect;
-            dbCommand.CommandText = "CREATE TABLE IF NOT EXISTS ProjectList (idProject INTEGER PRIMARY KEY AUTOINCREMENT, Project TEXT);CREATE TABLE IF NOT EXISTS UserList (idProject INTEGER PRIMARY KEY AUTOINCREMENT, User TEXT);CREATE TABLE IF NOT EXISTS TaskList (idTask INTEGER PRIMARY KEY AUTOINCREMENT, Task TEXT, Project TEXT, Theme TEXT, Type TEXT, Priority TEXT, User TEXT, Description TEXT);CREATE TABLE IF NOT EXISTS TriggerList (idTrigger INTEGER PRIMARY KEY AUTOINCREMENT, Trigger TEXT)";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS ProjectAddTrigger AFTER INSERT ON ProjectList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Добавлен проект.'); END";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS ProjectDelTrigger AFTER DELETE ON ProjectList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Удалён проект.'); END";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS UserAddTrigger AFTER INSERT ON UserList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Добавлен пользователь.'); END";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS UserDelTrigger AFTER DELETE ON USerList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Удалён пользователь.'); END";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS TaskAddTrigger AFTER INSERT ON TaskList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Добавлена задача.'); END";
-            dbCommand.ExecuteNonQuery();
-            dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS TaskDelTrigger AFTER DELETE ON TaskList BEGIN INSERT INTO TriggerList('Trigger') VALUES ('Удалена задача.'); END";
-            dbCommand.ExecuteNonQuery();
-        }
-
-        public void CreateTable(string tableName)
-        {
-            string sqlQuery = "CREATE TABLE IF NOT EXISTS "+tableName+"";
+            string sqlQuery = "CREATE TABLE IF NOT EXISTS " + tableName + " (idProject INTEGER PRIMARY KEY AUTOINCREMENT)";
             dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
             dbConnect.Open();
             dbCommand.Connection = dbConnect;
@@ -98,85 +75,127 @@ namespace BugTrackingSystemWithSQlite
             dbCommand.ExecuteNonQuery();
         }
 
-        public void AddColumn (string tableName, string columnName)
+        //Создать триггеры
+        public static void CreateTrigger(string tableName, string addText, string delText)
         {
-            string sqlQuery = "ALTER TABLE "+tableName+" ADD COLUMN "+columnName+" TEXT";
             dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
             dbConnect.Open();
             dbCommand.Connection = dbConnect;
-            dbCommand.CommandText = sqlQuery;
+            dbCommand.CommandText = "CREATE TABLE IF NOT EXISTS TriggerList (idTrigger INTEGER PRIMARY KEY AUTOINCREMENT, Trigger TEXT)";
+            dbCommand.ExecuteNonQuery();
+            dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS AddTrigger"+tableName+" AFTER INSERT ON "+tableName+" BEGIN INSERT INTO TriggerList('Trigger') VALUES ('"+addText+"'); END";
+            dbCommand.ExecuteNonQuery();
+            dbCommand.CommandText = "CREATE TRIGGER IF NOT EXISTS DelTrigger"+tableName+" AFTER DELETE ON "+tableName+" BEGIN INSERT INTO TriggerList('Trigger') VALUES ('"+delText+"'); END";
             dbCommand.ExecuteNonQuery();
         }
 
-        public void AddItem(string tableName, string columnName, string itemName)
+        //Создать колонки
+        public static void AddColumn(string tableName, params string[] columnName)
         {
-            if (File.Exists(dbFileName))
-            {                
+            string sqlQuery;
+            for (int i = 0; i < columnName.Length; i++)
+            {
+                sqlQuery = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName[i] + " TEXT";
                 dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
                 dbConnect.Open();
                 dbCommand.Connection = dbConnect;
-                string sqlQuery = "INSERT INTO "+ tableName +" ('"+columnName+"') values ('" +
-                        itemName + "')";
-                try
-                {
-                    dbCommand.CommandText = sqlQuery;
-                    dbCommand.ExecuteNonQuery();
-                }
-                catch (SQLiteException ex)
-                {
-                    MessageBox.Show("Ошибка: " + ex.Message);
-                }
-                dbConnect.Close();
-            }
-            else
-            {
-                MessageBox.Show("Необходимо создать или открыть файл базы данных!");
+                dbCommand.CommandText = sqlQuery;
+                dbCommand.ExecuteNonQuery();
             }
         }
 
-        public void DelItem(string tableName, string columnName, string itemName)
-        {
-            if (File.Exists(dbFileName))
+        //Добавить строку
+        public static void AddItem(string tableName, string itemName, params string[] columnName)
+        {            
+            string JoinColumnName = string.Join("', '", columnName);
+            dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
+            dbConnect.Open();
+            dbCommand.Connection = dbConnect;
+            string sqlQuery = "INSERT INTO " + tableName + " ('" + JoinColumnName + "') VALUES ('" +
+                    itemName + "')";                
+            try
             {
-                dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
-                dbConnect.Open();
-                dbCommand.Connection = dbConnect;
-                string sqlQuery = "DELETE FROM "+tableName+" WHERE "+columnName+" = '" + itemName + "'";
-                try
-                {
-                    dbCommand.CommandText = sqlQuery;
-                    dbCommand.ExecuteNonQuery();
-                }
-                catch (SQLiteException ex)
-                {
-                    MessageBox.Show("Ошибка: " + ex.Message);
-                }
-                dbConnect.Close();
+                dbCommand.CommandText = sqlQuery;
+                dbCommand.ExecuteNonQuery();
             }
-            else
+            catch (SQLiteException ex)
             {
-                MessageBox.Show("Необходимо создать или открыть файл базы данных!");
+                MessageBox.Show("Ошибка: " + ex.Message);
             }
+            dbConnect.Close();            
         }
 
-        public DataTable SelectColumn(string tableName, string columnName)
+        //Удалить строку
+        public static void DelItem(string tableName, string itemName, string columnName)
+        {            
+            dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
+            dbConnect.Open();
+            dbCommand.Connection = dbConnect;
+            string sqlQuery = "DELETE FROM " + tableName + " WHERE " + columnName + " = '" + itemName + "'";
+            try
+            {
+                dbCommand.CommandText = sqlQuery;
+                dbCommand.ExecuteNonQuery();
+            }
+            catch (SQLiteException ex)
+            {
+                MessageBox.Show("Ошибка: " + ex.Message);
+            }
+            dbConnect.Close();            
+        }
+
+        //Выделить колонку и добавить в dTable
+        public static DataTable SelectColumn(string tableName, string columnName)
         {
             string sqlQuery;
             DataTable dTable = new DataTable();
-            sqlQuery = "SELECT "+columnName+" FROM "+tableName+"";
+            sqlQuery = "SELECT " + columnName + " FROM " + tableName + "";
+            dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
             SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, dbConnect);
-            adapter.Fill(dTable);
+            adapter.Fill(dTable);            
             return dTable;
         }
 
-        public DataTable SelectTable(string tableName)
+        //Выделить таблицу и добавить в dTable
+        public static DataTable SelectTable(string tableName)
         {
             string sqlQuery;
             DataTable dTable = new DataTable();
             sqlQuery = "SELECT * FROM " + tableName + "";
+            dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
             SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, dbConnect);
             adapter.Fill(dTable);
             return dTable;
+        }
+
+        //Выделить столбец columnName и добавить в список
+        public static List<string> SelectTableInList(string tableName, string columnName)
+        {
+            List<string> list = new List<string>();
+            SQLiteConnection dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
+            dbConnect.Open();
+            string sqlQuery;
+            sqlQuery = "SELECT "+columnName+" FROM " + tableName + "";                        
+            SQLiteCommand dbCommand = new SQLiteCommand(sqlQuery, dbConnect);
+            SQLiteDataReader reader = dbCommand.ExecuteReader();
+            while (reader.Read())
+            {
+                list.Add(reader.GetString(0));
+            }
+            reader.Close();
+            return list;
+        }
+
+        //Выделить строки, где колонка columnName имеет значение cellValue и добавить в dTable
+        public static DataTable SelectTableWhere(string tableName, string columnName, string cellValue)
+        {
+            string sqlQuery;
+            DataTable dTable = new DataTable();
+            sqlQuery = "SELECT * FROM " + tableName + " WHERE "+columnName+" = '"+cellValue+"'" ;
+            dbConnect = new SQLiteConnection("Data Source=" + dbFileName + ";Version=3;");
+            SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, dbConnect);
+            adapter.Fill(dTable);            
+            return dTable;            
         }
     }
 }

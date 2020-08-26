@@ -73,50 +73,11 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormAddTask.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormAddTask.Designer.cs">
-      <DependentUpon>FormAddTask.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormDeleteProject.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormDeleteProject.Designer.cs">
-      <DependentUpon>FormDeleteProject.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormDeleteTask.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormDeleteTask.Designer.cs">
-      <DependentUpon>FormDeleteTask.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormDeleteUser.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormDeleteUser.Designer.cs">
-      <DependentUpon>FormDeleteUser.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Table.cs" />
-    <Compile Include="Task.cs" />
-    <Compile Include="User.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormAddTask.resx">
-      <DependentUpon>FormAddTask.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormDeleteProject.resx">
-      <DependentUpon>FormDeleteProject.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormDeleteTask.resx">
-      <DependentUpon>FormDeleteTask.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormDeleteUser.resx">
-      <DependentUpon>FormDeleteUser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
