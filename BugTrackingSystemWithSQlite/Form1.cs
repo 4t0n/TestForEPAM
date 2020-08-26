@@ -100,7 +100,7 @@ namespace BugTrackingSystemWithSQlite
                     if (dialogResult == DialogResult.Yes)
                     {
                         ///////
-                        project.DelItemFrom2Table(cbProjectName.SelectedItem.ToString(), task.TableName, project.ColumnName, task.ColumnName1);
+                        project.DelItemFrom2Table(Convert.ToString(cbProjectName.SelectedItem), task.TableName, project.ColumnName, task.ColumnName1);
                         ///////
                         cbProjectName.SelectedIndex = -1;
                         MessageBox.Show("Проект удалён.");
@@ -163,7 +163,7 @@ namespace BugTrackingSystemWithSQlite
                     if (dialogResult == DialogResult.Yes)
                     {
                         ///////
-                        user.DelItemFrom2Table(cbUserName.SelectedItem.ToString(), task.TableName, user.ColumnName, task.ColumnName5);
+                        user.DelItemFrom2Table(Convert.ToString(cbUserName.SelectedItem), task.TableName, user.ColumnName, task.ColumnName5);
                         ///////
                         cbUserName.SelectedIndex = -1;
                         MessageBox.Show("Пользователь удалён.");
@@ -199,9 +199,9 @@ namespace BugTrackingSystemWithSQlite
                     }
                     else
                     {
-                        string[] array = { tbTaskName.Text, cbProjectNameForTask.SelectedItem.ToString(),
+                        string[] array = { tbTaskName.Text, Convert.ToString(cbProjectNameForTask.SelectedItem),
                         tbThemeName.Text, tbTypeName.Text, tbPriorityName.Text,
-                        cbUserNameForTask.SelectedItem.ToString(), tbDescriptionName.Text};
+                        Convert.ToString(cbUserNameForTask.SelectedItem), tbDescriptionName.Text};
                         string AllRow = string.Join("', '", array);
                         ///////
                         task.AddItem(AllRow, task.ColumnName, task.ColumnName1, task.ColumnName2, task.ColumnName3,
@@ -236,7 +236,7 @@ namespace BugTrackingSystemWithSQlite
                 if (cbTaskName.SelectedIndex >= 0)
                 {
                     ///////
-                    task.DelItem(cbTaskName.SelectedItem.ToString(),task.ColumnName);
+                    task.DelItem(Convert.ToString(cbTaskName.SelectedItem),task.ColumnName);
                     ///////
                     cbTaskName.SelectedIndex = -1;
                     MessageBox.Show("Задача удалена.");
@@ -325,8 +325,8 @@ namespace BugTrackingSystemWithSQlite
                     {
                         CreateTaskTable();
                         ///////
-                        for (int i = 0; i < task.SelectTableWhere("Project", cbTasksInProject.SelectedItem.ToString()).Rows.Count; i++)
-                            dgvViewer.Rows.Add(task.SelectTableWhere("Project", cbTasksInProject.SelectedItem.ToString()).Rows[i].ItemArray);
+                        for (int i = 0; i < task.SelectTableWhere("Project", Convert.ToString(cbTasksInProject.SelectedItem)).Rows.Count; i++)
+                            dgvViewer.Rows.Add(task.SelectTableWhere("Project", Convert.ToString(cbTasksInProject.SelectedItem)).Rows[i].ItemArray);
                         ///////
                         cbTasksInProject.SelectedIndex = -1;
                     }
@@ -357,8 +357,8 @@ namespace BugTrackingSystemWithSQlite
                     {
                         CreateTaskTable();
                         ///////
-                        for (int i = 0; i < task.SelectTableWhere("User", cbTasksOnUser.SelectedItem.ToString()).Rows.Count; i++)
-                            dgvViewer.Rows.Add(task.SelectTableWhere("User", cbTasksOnUser.SelectedItem.ToString()).Rows[i].ItemArray);
+                        for (int i = 0; i < task.SelectTableWhere("User", Convert.ToString(cbTasksOnUser.SelectedItem)).Rows.Count; i++)
+                            dgvViewer.Rows.Add(task.SelectTableWhere("User", Convert.ToString(cbTasksOnUser.SelectedItem)).Rows[i].ItemArray);
                         ///////
                         cbTasksOnUser.SelectedIndex = -1;
                     }
